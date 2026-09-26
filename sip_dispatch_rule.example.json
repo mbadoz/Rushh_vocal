@@ -1,0 +1,7 @@
+{
+  "dispatch_rule": {
+    "name": "Rushh banc vocal entrant",
+    "rule": { "dispatchRuleIndividual": { "roomPrefix": "bench-phone-" } },
+    "roomConfig": { "agents": [{ "agentName": "rushh-bench" }] }
+  }
+}

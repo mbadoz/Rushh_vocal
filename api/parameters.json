@@ -1,0 +1,3617 @@
+{
+  "stt:soniox:stt-rt-v5": [
+    {
+      "name": "language_hints",
+      "value": []
+    },
+    {
+      "name": "language_hints_strict",
+      "value": false
+    },
+    {
+      "name": "context",
+      "value": ""
+    },
+    {
+      "name": "num_channels",
+      "value": 1
+    },
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "enable_speaker_diarization",
+      "value": false
+    },
+    {
+      "name": "enable_language_identification",
+      "value": true
+    },
+    {
+      "name": "max_endpoint_delay_ms",
+      "value": 2000
+    },
+    {
+      "name": "endpoint_sensitivity",
+      "value": 0.5
+    },
+    {
+      "name": "endpoint_latency_adjustment_level",
+      "value": 1
+    },
+    {
+      "name": "client_reference_id",
+      "value": ""
+    },
+    {
+      "name": "translation",
+      "value": {}
+    }
+  ],
+  "stt:deepgram:nova-3": [
+    {
+      "name": "language",
+      "value": "en-US"
+    },
+    {
+      "name": "detect_language",
+      "value": false
+    },
+    {
+      "name": "interim_results",
+      "value": true
+    },
+    {
+      "name": "punctuate",
+      "value": true
+    },
+    {
+      "name": "smart_format",
+      "value": false
+    },
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "no_delay",
+      "value": true
+    },
+    {
+      "name": "endpointing_ms",
+      "value": 25
+    },
+    {
+      "name": "enable_diarization",
+      "value": false
+    },
+    {
+      "name": "filler_words",
+      "value": true
+    },
+    {
+      "name": "keywords",
+      "value": 0.5
+    },
+    {
+      "name": "keyterm",
+      "value": []
+    },
+    {
+      "name": "tags",
+      "value": []
+    },
+    {
+      "name": "profanity_filter",
+      "value": false
+    },
+    {
+      "name": "redact",
+      "value": []
+    },
+    {
+      "name": "numerals",
+      "value": false
+    },
+    {
+      "name": "mip_opt_out",
+      "value": false
+    },
+    {
+      "name": "vad_events",
+      "value": true
+    },
+    {
+      "name": "utterance_end_ms",
+      "value": 1
+    },
+    {
+      "name": "dictation",
+      "value": false
+    },
+    {
+      "name": "replace",
+      "value": {}
+    },
+    {
+      "name": "search",
+      "value": []
+    },
+    {
+      "name": "keyterms",
+      "value": []
+    }
+  ],
+  "stt:deepgram:flux-general-multi": [
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "eager_eot_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "eot_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "eot_timeout_ms",
+      "value": 1
+    },
+    {
+      "name": "keyterm",
+      "value": []
+    },
+    {
+      "name": "tags",
+      "value": []
+    },
+    {
+      "name": "language_hint",
+      "value": []
+    },
+    {
+      "name": "mip_opt_out",
+      "value": false
+    },
+    {
+      "name": "numerals",
+      "value": false
+    },
+    {
+      "name": "profanity_filter",
+      "value": false
+    },
+    {
+      "name": "redact",
+      "value": ""
+    },
+    {
+      "name": "keyterms",
+      "value": []
+    }
+  ],
+  "stt:assemblyai:universal-streaming-multilingual": [
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "language_detection",
+      "value": false
+    },
+    {
+      "name": "language_code",
+      "value": ""
+    },
+    {
+      "name": "language_codes",
+      "value": []
+    },
+    {
+      "name": "end_of_turn_confidence_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "min_turn_silence",
+      "value": 1
+    },
+    {
+      "name": "max_turn_silence",
+      "value": 1
+    },
+    {
+      "name": "format_turns",
+      "value": false
+    },
+    {
+      "name": "continuous_partials",
+      "value": false
+    },
+    {
+      "name": "interruption_delay",
+      "value": 1
+    },
+    {
+      "name": "keyterms_prompt",
+      "value": []
+    },
+    {
+      "name": "prompt",
+      "value": ""
+    },
+    {
+      "name": "agent_context",
+      "value": ""
+    },
+    {
+      "name": "previous_context_n_turns",
+      "value": 1
+    },
+    {
+      "name": "vad_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "speaker_labels",
+      "value": false
+    },
+    {
+      "name": "max_speakers",
+      "value": 1
+    },
+    {
+      "name": "domain",
+      "value": ""
+    },
+    {
+      "name": "voice_focus",
+      "value": ""
+    },
+    {
+      "name": "voice_focus_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "mode",
+      "value": ""
+    },
+    {
+      "name": "buffer_size_seconds",
+      "value": 0.05
+    },
+    {
+      "name": "min_end_of_turn_silence_when_confident",
+      "value": 1
+    },
+    {
+      "name": "agent_context_carryover",
+      "value": false
+    }
+  ],
+  "stt:assemblyai:universal-3-5-pro": [
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "language_detection",
+      "value": false
+    },
+    {
+      "name": "language_code",
+      "value": ""
+    },
+    {
+      "name": "language_codes",
+      "value": []
+    },
+    {
+      "name": "end_of_turn_confidence_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "min_turn_silence",
+      "value": 1
+    },
+    {
+      "name": "max_turn_silence",
+      "value": 1
+    },
+    {
+      "name": "format_turns",
+      "value": false
+    },
+    {
+      "name": "continuous_partials",
+      "value": false
+    },
+    {
+      "name": "interruption_delay",
+      "value": 1
+    },
+    {
+      "name": "keyterms_prompt",
+      "value": []
+    },
+    {
+      "name": "prompt",
+      "value": ""
+    },
+    {
+      "name": "agent_context",
+      "value": ""
+    },
+    {
+      "name": "previous_context_n_turns",
+      "value": 1
+    },
+    {
+      "name": "vad_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "speaker_labels",
+      "value": false
+    },
+    {
+      "name": "max_speakers",
+      "value": 1
+    },
+    {
+      "name": "domain",
+      "value": ""
+    },
+    {
+      "name": "voice_focus",
+      "value": ""
+    },
+    {
+      "name": "voice_focus_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "mode",
+      "value": ""
+    },
+    {
+      "name": "buffer_size_seconds",
+      "value": 0.05
+    },
+    {
+      "name": "min_end_of_turn_silence_when_confident",
+      "value": 1
+    },
+    {
+      "name": "agent_context_carryover",
+      "value": false
+    }
+  ],
+  "stt:speechmatics:standard": [
+    {
+      "name": "language",
+      "value": "fr"
+    },
+    {
+      "name": "max_delay",
+      "value": 0.7
+    },
+    {
+      "name": "max_delay_mode",
+      "value": "flexible"
+    },
+    {
+      "name": "additional_vocab",
+      "value": []
+    },
+    {
+      "name": "enable_partials",
+      "value": true
+    },
+    {
+      "name": "enable_entities",
+      "value": true
+    },
+    {
+      "name": "diarization",
+      "value": "none"
+    },
+    {
+      "name": "punctuation_overrides",
+      "value": {
+        "sensitivity": 0.5
+      }
+    },
+    {
+      "name": "transcript_filtering_config",
+      "value": {
+        "remove_disfluencies": true
+      }
+    }
+  ],
+  "stt:speechmatics:enhanced": [
+    {
+      "name": "language",
+      "value": "fr"
+    },
+    {
+      "name": "max_delay",
+      "value": 0.7
+    },
+    {
+      "name": "max_delay_mode",
+      "value": "flexible"
+    },
+    {
+      "name": "additional_vocab",
+      "value": []
+    },
+    {
+      "name": "enable_partials",
+      "value": true
+    },
+    {
+      "name": "enable_entities",
+      "value": true
+    },
+    {
+      "name": "diarization",
+      "value": "none"
+    },
+    {
+      "name": "punctuation_overrides",
+      "value": {
+        "sensitivity": 0.5
+      }
+    },
+    {
+      "name": "transcript_filtering_config",
+      "value": {
+        "remove_disfluencies": true
+      }
+    }
+  ],
+  "stt:gladia:solaria-1": [
+    {
+      "name": "interim_results",
+      "value": true
+    },
+    {
+      "name": "languages",
+      "value": []
+    },
+    {
+      "name": "code_switching",
+      "value": true
+    },
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "bit_depth",
+      "value": 16
+    },
+    {
+      "name": "endpointing",
+      "value": 0.05
+    },
+    {
+      "name": "maximum_duration_without_endpointing",
+      "value": 5
+    },
+    {
+      "name": "channels",
+      "value": 1
+    },
+    {
+      "name": "region",
+      "value": "eu-west"
+    },
+    {
+      "name": "encoding",
+      "value": "wav/pcm"
+    },
+    {
+      "name": "energy_filter",
+      "value": false
+    },
+    {
+      "name": "translation_enabled",
+      "value": false
+    },
+    {
+      "name": "translation_target_languages",
+      "value": []
+    },
+    {
+      "name": "translation_model",
+      "value": "base"
+    },
+    {
+      "name": "translation_match_original_utterances",
+      "value": true
+    },
+    {
+      "name": "translation_lipsync",
+      "value": true
+    },
+    {
+      "name": "translation_context_adaptation",
+      "value": false
+    },
+    {
+      "name": "translation_context",
+      "value": ""
+    },
+    {
+      "name": "translation_informal",
+      "value": false
+    },
+    {
+      "name": "custom_vocabulary",
+      "value": []
+    },
+    {
+      "name": "custom_spelling",
+      "value": []
+    },
+    {
+      "name": "pre_processing_audio_enhancer",
+      "value": false
+    },
+    {
+      "name": "pre_processing_speech_threshold",
+      "value": 0.6
+    }
+  ],
+  "stt:elevenlabs:scribe_v2_realtime": [
+    {
+      "name": "language_code",
+      "value": ""
+    },
+    {
+      "name": "secondary_languages",
+      "value": []
+    },
+    {
+      "name": "include_language_detection",
+      "value": false
+    },
+    {
+      "name": "tag_audio_events",
+      "value": true
+    },
+    {
+      "name": "use_realtime",
+      "value": false
+    },
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "audio_chunk_duration_ms",
+      "value": 50
+    },
+    {
+      "name": "server_vad",
+      "value": ""
+    },
+    {
+      "name": "include_timestamps",
+      "value": false
+    },
+    {
+      "name": "keyterms",
+      "value": []
+    },
+    {
+      "name": "no_verbatim",
+      "value": false
+    },
+    {
+      "name": "enable_logging",
+      "value": true
+    },
+    {
+      "name": "previous_text",
+      "value": ""
+    }
+  ],
+  "stt:openai:gpt-4o-transcribe": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "detect_language",
+      "value": false
+    },
+    {
+      "name": "prompt",
+      "value": ""
+    },
+    {
+      "name": "keywords",
+      "value": []
+    },
+    {
+      "name": "turn_detection",
+      "value": ""
+    },
+    {
+      "name": "noise_reduction_type",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "use_realtime",
+      "value": false
+    }
+  ],
+  "stt:openai:gpt-4o-mini-transcribe": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "detect_language",
+      "value": false
+    },
+    {
+      "name": "prompt",
+      "value": ""
+    },
+    {
+      "name": "keywords",
+      "value": []
+    },
+    {
+      "name": "turn_detection",
+      "value": ""
+    },
+    {
+      "name": "noise_reduction_type",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "use_realtime",
+      "value": false
+    }
+  ],
+  "stt:groq:whisper-large-v3-turbo": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "detect_language",
+      "value": false
+    },
+    {
+      "name": "prompt",
+      "value": ""
+    },
+    {
+      "name": "keywords",
+      "value": []
+    },
+    {
+      "name": "turn_detection",
+      "value": ""
+    },
+    {
+      "name": "noise_reduction_type",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "use_realtime",
+      "value": false
+    }
+  ],
+  "stt:cartesia:ink-2": [
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "audio_chunk_duration_ms",
+      "value": 160
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "turn_start_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "turn_eager_end_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "turn_end_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "turn_end_timeout_ms",
+      "value": 1
+    },
+    {
+      "name": "keyterm",
+      "value": []
+    }
+  ],
+  "stt:cartesia:ink-whisper": [
+    {
+      "name": "sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "audio_chunk_duration_ms",
+      "value": 160
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "turn_start_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "turn_eager_end_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "turn_end_threshold",
+      "value": 0.5
+    },
+    {
+      "name": "turn_end_timeout_ms",
+      "value": 1
+    },
+    {
+      "name": "keyterm",
+      "value": []
+    }
+  ],
+  "llm:cerebras:gpt-oss-120b": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:cerebras:qwen-3.8-27b": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:groq:openai/gpt-oss-20b": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:groq:openai/gpt-oss-120b": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:groq:openai/gpt-oss-safeguard-20b": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:groq:llama-3.1-8b-instant": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:google:gemini-3.7-flash": [
+    {
+      "name": "vertexai",
+      "value": false
+    },
+    {
+      "name": "project",
+      "value": ""
+    },
+    {
+      "name": "location",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "max_output_tokens",
+      "value": 1
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "top_k",
+      "value": 0.5
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "thinking_config",
+      "value": {}
+    },
+    {
+      "name": "retrieval_config",
+      "value": {}
+    },
+    {
+      "name": "automatic_function_calling_config",
+      "value": {}
+    },
+    {
+      "name": "seed",
+      "value": 1
+    },
+    {
+      "name": "safety_settings",
+      "value": []
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "cached_content",
+      "value": ""
+    },
+    {
+      "name": "media_resolution",
+      "value": ""
+    }
+  ],
+  "llm:google:gemini-3.8-flash": [
+    {
+      "name": "vertexai",
+      "value": false
+    },
+    {
+      "name": "project",
+      "value": ""
+    },
+    {
+      "name": "location",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "max_output_tokens",
+      "value": 1
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "top_k",
+      "value": 0.5
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "thinking_config",
+      "value": {}
+    },
+    {
+      "name": "retrieval_config",
+      "value": {}
+    },
+    {
+      "name": "automatic_function_calling_config",
+      "value": {}
+    },
+    {
+      "name": "seed",
+      "value": 1
+    },
+    {
+      "name": "safety_settings",
+      "value": []
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "cached_content",
+      "value": ""
+    },
+    {
+      "name": "media_resolution",
+      "value": ""
+    }
+  ],
+  "llm:google:gemini-2.5-flash-lite": [
+    {
+      "name": "vertexai",
+      "value": false
+    },
+    {
+      "name": "project",
+      "value": ""
+    },
+    {
+      "name": "location",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "max_output_tokens",
+      "value": 1
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "top_k",
+      "value": 0.5
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "thinking_config",
+      "value": {}
+    },
+    {
+      "name": "retrieval_config",
+      "value": {}
+    },
+    {
+      "name": "automatic_function_calling_config",
+      "value": {}
+    },
+    {
+      "name": "seed",
+      "value": 1
+    },
+    {
+      "name": "safety_settings",
+      "value": []
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "cached_content",
+      "value": ""
+    },
+    {
+      "name": "media_resolution",
+      "value": ""
+    }
+  ],
+  "llm:google:gemini-3.5-flash-lite": [
+    {
+      "name": "vertexai",
+      "value": false
+    },
+    {
+      "name": "project",
+      "value": ""
+    },
+    {
+      "name": "location",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "max_output_tokens",
+      "value": 1
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "top_k",
+      "value": 0.5
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "thinking_config",
+      "value": {}
+    },
+    {
+      "name": "retrieval_config",
+      "value": {}
+    },
+    {
+      "name": "automatic_function_calling_config",
+      "value": {}
+    },
+    {
+      "name": "seed",
+      "value": 1
+    },
+    {
+      "name": "safety_settings",
+      "value": []
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "cached_content",
+      "value": ""
+    },
+    {
+      "name": "media_resolution",
+      "value": ""
+    }
+  ],
+  "llm:openai:gpt-6-luna": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:openai:gpt-5.4-mini": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:openai:gpt-4.1-mini": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:anthropic:claude-haiku-4-5": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "top_k",
+      "value": 1
+    },
+    {
+      "name": "max_tokens",
+      "value": 1
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "caching",
+      "value": ""
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    }
+  ],
+  "llm:mistral:mistral-small-2603": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:mistral:mistral-small-latest": [
+    {
+      "name": "user",
+      "value": ""
+    },
+    {
+      "name": "safety_identifier",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_key",
+      "value": ""
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "parallel_tool_calls",
+      "value": false
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "store",
+      "value": false
+    },
+    {
+      "name": "metadata",
+      "value": {}
+    },
+    {
+      "name": "max_completion_tokens",
+      "value": 1
+    },
+    {
+      "name": "timeout",
+      "value": ""
+    },
+    {
+      "name": "max_retries",
+      "value": 1
+    },
+    {
+      "name": "service_tier",
+      "value": ""
+    },
+    {
+      "name": "reasoning_effort",
+      "value": ""
+    },
+    {
+      "name": "verbosity",
+      "value": ""
+    },
+    {
+      "name": "prompt_cache_retention",
+      "value": ""
+    },
+    {
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0
+    },
+    {
+      "name": "stop",
+      "value": []
+    },
+    {
+      "name": "top_k",
+      "value": 40
+    }
+  ],
+  "llm:livekit:google/gemma-4-31b-it": [
+    {
+      "name": "provider",
+      "value": ""
+    },
+    {
+      "name": "inference_class",
+      "value": ""
+    },
+    {
+      "name": "extra_kwargs",
+      "value": {}
+    }
+  ],
+  "tts:cartesia:sonic-3.6": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "voice",
+      "value": "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "emotion",
+      "value": []
+    },
+    {
+      "name": "volume",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "word_timestamps",
+      "value": true
+    },
+    {
+      "name": "pronunciation_dict_id",
+      "value": ""
+    },
+    {
+      "name": "text_pacing",
+      "value": false
+    },
+    {
+      "name": "api_version",
+      "value": "2025-04-16"
+    }
+  ],
+  "tts:cartesia:sonic-3.6-2026-08-27": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "voice",
+      "value": "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "emotion",
+      "value": []
+    },
+    {
+      "name": "volume",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "word_timestamps",
+      "value": true
+    },
+    {
+      "name": "pronunciation_dict_id",
+      "value": ""
+    },
+    {
+      "name": "text_pacing",
+      "value": false
+    },
+    {
+      "name": "api_version",
+      "value": "2025-04-16"
+    }
+  ],
+  "tts:cartesia:sonic-3.5": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "voice",
+      "value": "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "emotion",
+      "value": []
+    },
+    {
+      "name": "volume",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "word_timestamps",
+      "value": true
+    },
+    {
+      "name": "pronunciation_dict_id",
+      "value": ""
+    },
+    {
+      "name": "text_pacing",
+      "value": false
+    },
+    {
+      "name": "api_version",
+      "value": "2025-04-16"
+    }
+  ],
+  "tts:cartesia:sonic-3": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "voice",
+      "value": "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "emotion",
+      "value": []
+    },
+    {
+      "name": "volume",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "word_timestamps",
+      "value": true
+    },
+    {
+      "name": "pronunciation_dict_id",
+      "value": ""
+    },
+    {
+      "name": "text_pacing",
+      "value": false
+    },
+    {
+      "name": "api_version",
+      "value": "2025-04-16"
+    }
+  ],
+  "tts:cartesia:sonic-2": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "voice",
+      "value": "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "emotion",
+      "value": []
+    },
+    {
+      "name": "volume",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "word_timestamps",
+      "value": true
+    },
+    {
+      "name": "pronunciation_dict_id",
+      "value": ""
+    },
+    {
+      "name": "text_pacing",
+      "value": false
+    },
+    {
+      "name": "api_version",
+      "value": "2025-04-16"
+    }
+  ],
+  "tts:cartesia:sonic-turbo": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "voice",
+      "value": "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "emotion",
+      "value": []
+    },
+    {
+      "name": "volume",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "word_timestamps",
+      "value": true
+    },
+    {
+      "name": "pronunciation_dict_id",
+      "value": ""
+    },
+    {
+      "name": "text_pacing",
+      "value": false
+    },
+    {
+      "name": "api_version",
+      "value": "2025-04-16"
+    }
+  ],
+  "tts:cartesia:sonic-3-2025-10-27": [
+    {
+      "name": "language",
+      "value": "en"
+    },
+    {
+      "name": "encoding",
+      "value": "pcm_s16le"
+    },
+    {
+      "name": "voice",
+      "value": "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "emotion",
+      "value": []
+    },
+    {
+      "name": "volume",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "word_timestamps",
+      "value": true
+    },
+    {
+      "name": "pronunciation_dict_id",
+      "value": ""
+    },
+    {
+      "name": "text_pacing",
+      "value": false
+    },
+    {
+      "name": "api_version",
+      "value": "2025-04-16"
+    }
+  ],
+  "tts:elevenlabs:eleven_v3_conversational": [
+    {
+      "name": "voice_id",
+      "value": "hpp4J3VqNfWAUOO0d1Us"
+    },
+    {
+      "name": "voice_settings",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": ""
+    },
+    {
+      "name": "streaming_latency",
+      "value": 1
+    },
+    {
+      "name": "inactivity_timeout",
+      "value": 180
+    },
+    {
+      "name": "auto_mode",
+      "value": false
+    },
+    {
+      "name": "apply_text_normalization",
+      "value": "auto"
+    },
+    {
+      "name": "apply_language_text_normalization",
+      "value": false
+    },
+    {
+      "name": "word_tokenizer",
+      "value": ""
+    },
+    {
+      "name": "enable_ssml_parsing",
+      "value": false
+    },
+    {
+      "name": "enable_logging",
+      "value": true
+    },
+    {
+      "name": "chunk_length_schedule",
+      "value": 1
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "sync_alignment",
+      "value": true
+    },
+    {
+      "name": "preferred_alignment",
+      "value": ""
+    },
+    {
+      "name": "pronunciation_dictionary_locators",
+      "value": []
+    }
+  ],
+  "tts:elevenlabs:eleven_v3": [
+    {
+      "name": "voice_id",
+      "value": "hpp4J3VqNfWAUOO0d1Us"
+    },
+    {
+      "name": "voice_settings",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": ""
+    },
+    {
+      "name": "streaming_latency",
+      "value": 1
+    },
+    {
+      "name": "inactivity_timeout",
+      "value": 180
+    },
+    {
+      "name": "auto_mode",
+      "value": false
+    },
+    {
+      "name": "apply_text_normalization",
+      "value": "auto"
+    },
+    {
+      "name": "apply_language_text_normalization",
+      "value": false
+    },
+    {
+      "name": "word_tokenizer",
+      "value": ""
+    },
+    {
+      "name": "enable_ssml_parsing",
+      "value": false
+    },
+    {
+      "name": "enable_logging",
+      "value": true
+    },
+    {
+      "name": "chunk_length_schedule",
+      "value": 1
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "sync_alignment",
+      "value": true
+    },
+    {
+      "name": "preferred_alignment",
+      "value": ""
+    },
+    {
+      "name": "pronunciation_dictionary_locators",
+      "value": []
+    }
+  ],
+  "tts:elevenlabs:eleven_flash_v2_5": [
+    {
+      "name": "voice_id",
+      "value": "hpp4J3VqNfWAUOO0d1Us"
+    },
+    {
+      "name": "voice_settings",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": ""
+    },
+    {
+      "name": "streaming_latency",
+      "value": 1
+    },
+    {
+      "name": "inactivity_timeout",
+      "value": 180
+    },
+    {
+      "name": "auto_mode",
+      "value": false
+    },
+    {
+      "name": "apply_text_normalization",
+      "value": "auto"
+    },
+    {
+      "name": "apply_language_text_normalization",
+      "value": false
+    },
+    {
+      "name": "word_tokenizer",
+      "value": ""
+    },
+    {
+      "name": "enable_ssml_parsing",
+      "value": false
+    },
+    {
+      "name": "enable_logging",
+      "value": true
+    },
+    {
+      "name": "chunk_length_schedule",
+      "value": 1
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "sync_alignment",
+      "value": true
+    },
+    {
+      "name": "preferred_alignment",
+      "value": ""
+    },
+    {
+      "name": "pronunciation_dictionary_locators",
+      "value": []
+    }
+  ],
+  "tts:elevenlabs:eleven_turbo_v2_5": [
+    {
+      "name": "voice_id",
+      "value": "hpp4J3VqNfWAUOO0d1Us"
+    },
+    {
+      "name": "voice_settings",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": ""
+    },
+    {
+      "name": "streaming_latency",
+      "value": 1
+    },
+    {
+      "name": "inactivity_timeout",
+      "value": 180
+    },
+    {
+      "name": "auto_mode",
+      "value": false
+    },
+    {
+      "name": "apply_text_normalization",
+      "value": "auto"
+    },
+    {
+      "name": "apply_language_text_normalization",
+      "value": false
+    },
+    {
+      "name": "word_tokenizer",
+      "value": ""
+    },
+    {
+      "name": "enable_ssml_parsing",
+      "value": false
+    },
+    {
+      "name": "enable_logging",
+      "value": true
+    },
+    {
+      "name": "chunk_length_schedule",
+      "value": 1
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "sync_alignment",
+      "value": true
+    },
+    {
+      "name": "preferred_alignment",
+      "value": ""
+    },
+    {
+      "name": "pronunciation_dictionary_locators",
+      "value": []
+    }
+  ],
+  "tts:elevenlabs:eleven_multilingual_v2": [
+    {
+      "name": "voice_id",
+      "value": "hpp4J3VqNfWAUOO0d1Us"
+    },
+    {
+      "name": "voice_settings",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": ""
+    },
+    {
+      "name": "streaming_latency",
+      "value": 1
+    },
+    {
+      "name": "inactivity_timeout",
+      "value": 180
+    },
+    {
+      "name": "auto_mode",
+      "value": false
+    },
+    {
+      "name": "apply_text_normalization",
+      "value": "auto"
+    },
+    {
+      "name": "apply_language_text_normalization",
+      "value": false
+    },
+    {
+      "name": "word_tokenizer",
+      "value": ""
+    },
+    {
+      "name": "enable_ssml_parsing",
+      "value": false
+    },
+    {
+      "name": "enable_logging",
+      "value": true
+    },
+    {
+      "name": "chunk_length_schedule",
+      "value": 1
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "sync_alignment",
+      "value": true
+    },
+    {
+      "name": "preferred_alignment",
+      "value": ""
+    },
+    {
+      "name": "pronunciation_dictionary_locators",
+      "value": []
+    }
+  ],
+  "tts:openai:gpt-4o-mini-tts": [
+    {
+      "name": "voice",
+      "value": "ash"
+    },
+    {
+      "name": "speed",
+      "value": 1.0
+    },
+    {
+      "name": "instructions",
+      "value": ""
+    },
+    {
+      "name": "response_format",
+      "value": ""
+    }
+  ],
+  "tts:openai:tts-1": [
+    {
+      "name": "voice",
+      "value": "ash"
+    },
+    {
+      "name": "speed",
+      "value": 1.0
+    },
+    {
+      "name": "instructions",
+      "value": ""
+    },
+    {
+      "name": "response_format",
+      "value": ""
+    }
+  ],
+  "tts:openai:tts-1-hd": [
+    {
+      "name": "voice",
+      "value": "ash"
+    },
+    {
+      "name": "speed",
+      "value": 1.0
+    },
+    {
+      "name": "instructions",
+      "value": ""
+    },
+    {
+      "name": "response_format",
+      "value": ""
+    }
+  ],
+  "tts:deepgram:aura-2-agathe-fr": [
+    {
+      "name": "encoding",
+      "value": "linear16"
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "bit_rate",
+      "value": 1
+    },
+    {
+      "name": "word_tokenizer",
+      "value": ""
+    },
+    {
+      "name": "mip_opt_out",
+      "value": false
+    }
+  ],
+  "tts:deepgram:aura-2-hector-fr": [
+    {
+      "name": "encoding",
+      "value": "linear16"
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "bit_rate",
+      "value": 1
+    },
+    {
+      "name": "word_tokenizer",
+      "value": ""
+    },
+    {
+      "name": "mip_opt_out",
+      "value": false
+    }
+  ],
+  "tts:rime:mistv2": [
+    {
+      "name": "websocket_protocol",
+      "value": "binary"
+    },
+    {
+      "name": "speaker",
+      "value": ""
+    },
+    {
+      "name": "lang",
+      "value": "eng"
+    },
+    {
+      "name": "audio_format",
+      "value": ""
+    },
+    {
+      "name": "repetition_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "max_tokens",
+      "value": 1
+    },
+    {
+      "name": "time_scale_factor",
+      "value": 0.5
+    },
+    {
+      "name": "speed_alpha",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 1
+    },
+    {
+      "name": "reduce_latency",
+      "value": false
+    },
+    {
+      "name": "pause_between_brackets",
+      "value": false
+    },
+    {
+      "name": "phonemize_between_brackets",
+      "value": false
+    },
+    {
+      "name": "use_websocket",
+      "value": false
+    },
+    {
+      "name": "segment",
+      "value": ""
+    },
+    {
+      "name": "allow_custom_endpoint",
+      "value": false
+    }
+  ],
+  "tts:rime:mistv3": [
+    {
+      "name": "websocket_protocol",
+      "value": "binary"
+    },
+    {
+      "name": "speaker",
+      "value": ""
+    },
+    {
+      "name": "lang",
+      "value": "eng"
+    },
+    {
+      "name": "audio_format",
+      "value": ""
+    },
+    {
+      "name": "repetition_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "max_tokens",
+      "value": 1
+    },
+    {
+      "name": "time_scale_factor",
+      "value": 0.5
+    },
+    {
+      "name": "speed_alpha",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 1
+    },
+    {
+      "name": "reduce_latency",
+      "value": false
+    },
+    {
+      "name": "pause_between_brackets",
+      "value": false
+    },
+    {
+      "name": "phonemize_between_brackets",
+      "value": false
+    },
+    {
+      "name": "use_websocket",
+      "value": false
+    },
+    {
+      "name": "segment",
+      "value": ""
+    },
+    {
+      "name": "allow_custom_endpoint",
+      "value": false
+    }
+  ],
+  "tts:rime:coda": [
+    {
+      "name": "websocket_protocol",
+      "value": "binary"
+    },
+    {
+      "name": "speaker",
+      "value": ""
+    },
+    {
+      "name": "lang",
+      "value": "eng"
+    },
+    {
+      "name": "audio_format",
+      "value": ""
+    },
+    {
+      "name": "repetition_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "max_tokens",
+      "value": 1
+    },
+    {
+      "name": "time_scale_factor",
+      "value": 0.5
+    },
+    {
+      "name": "speed_alpha",
+      "value": 0.5
+    },
+    {
+      "name": "sample_rate",
+      "value": 1
+    },
+    {
+      "name": "reduce_latency",
+      "value": false
+    },
+    {
+      "name": "pause_between_brackets",
+      "value": false
+    },
+    {
+      "name": "phonemize_between_brackets",
+      "value": false
+    },
+    {
+      "name": "use_websocket",
+      "value": false
+    },
+    {
+      "name": "segment",
+      "value": ""
+    },
+    {
+      "name": "allow_custom_endpoint",
+      "value": false
+    }
+  ],
+  "tts:azure:neural": [
+    {
+      "name": "voice",
+      "value": "en-US-JennyNeural"
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "prosody",
+      "value": {}
+    },
+    {
+      "name": "style",
+      "value": {}
+    },
+    {
+      "name": "lexicon_uri",
+      "value": ""
+    },
+    {
+      "name": "deployment_id",
+      "value": ""
+    }
+  ],
+  "tts:google:chirp-3-hd": [
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "gender",
+      "value": ""
+    },
+    {
+      "name": "voice_name",
+      "value": ""
+    },
+    {
+      "name": "voice_cloning_key",
+      "value": ""
+    },
+    {
+      "name": "model_name",
+      "value": ""
+    },
+    {
+      "name": "prompt",
+      "value": ""
+    },
+    {
+      "name": "sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "pitch",
+      "value": 0
+    },
+    {
+      "name": "effects_profile_id",
+      "value": ""
+    },
+    {
+      "name": "speaking_rate",
+      "value": 1.0
+    },
+    {
+      "name": "volume_gain_db",
+      "value": 0.0
+    },
+    {
+      "name": "location",
+      "value": "global"
+    },
+    {
+      "name": "audio_encoding",
+      "value": 7
+    },
+    {
+      "name": "custom_pronunciations",
+      "value": ""
+    },
+    {
+      "name": "use_streaming",
+      "value": true
+    },
+    {
+      "name": "enable_ssml",
+      "value": false
+    },
+    {
+      "name": "use_markup",
+      "value": false
+    }
+  ],
+  "tts:inworld:inworld-tts-2": [
+    {
+      "name": "voice",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": ""
+    },
+    {
+      "name": "bit_rate",
+      "value": 1
+    },
+    {
+      "name": "sample_rate",
+      "value": 1
+    },
+    {
+      "name": "speaking_rate",
+      "value": 0.5
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "timestamp_type",
+      "value": ""
+    },
+    {
+      "name": "text_normalization",
+      "value": ""
+    },
+    {
+      "name": "delivery_mode",
+      "value": ""
+    },
+    {
+      "name": "timestamp_transport_strategy",
+      "value": ""
+    },
+    {
+      "name": "buffer_char_threshold",
+      "value": 1
+    },
+    {
+      "name": "max_buffer_delay_ms",
+      "value": 1
+    },
+    {
+      "name": "ws_url",
+      "value": "wss://api.inworld.ai/"
+    },
+    {
+      "name": "retain_format",
+      "value": false
+    },
+    {
+      "name": "max_connections",
+      "value": 20
+    },
+    {
+      "name": "idle_connection_timeout",
+      "value": 300.0
+    }
+  ],
+  "tts:inworld:inworld-tts-1.5-max": [
+    {
+      "name": "voice",
+      "value": ""
+    },
+    {
+      "name": "encoding",
+      "value": ""
+    },
+    {
+      "name": "bit_rate",
+      "value": 1
+    },
+    {
+      "name": "sample_rate",
+      "value": 1
+    },
+    {
+      "name": "speaking_rate",
+      "value": 0.5
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "timestamp_type",
+      "value": ""
+    },
+    {
+      "name": "text_normalization",
+      "value": ""
+    },
+    {
+      "name": "delivery_mode",
+      "value": ""
+    },
+    {
+      "name": "timestamp_transport_strategy",
+      "value": ""
+    },
+    {
+      "name": "buffer_char_threshold",
+      "value": 1
+    },
+    {
+      "name": "max_buffer_delay_ms",
+      "value": 1
+    },
+    {
+      "name": "ws_url",
+      "value": "wss://api.inworld.ai/"
+    },
+    {
+      "name": "retain_format",
+      "value": false
+    },
+    {
+      "name": "max_connections",
+      "value": 20
+    },
+    {
+      "name": "idle_connection_timeout",
+      "value": 300.0
+    }
+  ],
+  "tts:hume:2": [
+    {
+      "name": "voice",
+      "value": {
+        "name": "Male English Actor",
+        "provider": "HUME_AI"
+      }
+    },
+    {
+      "name": "model_version",
+      "value": "1"
+    },
+    {
+      "name": "description",
+      "value": ""
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "trailing_silence",
+      "value": 0.5
+    },
+    {
+      "name": "context",
+      "value": []
+    },
+    {
+      "name": "instant_mode",
+      "value": false
+    },
+    {
+      "name": "audio_format",
+      "value": "mp3"
+    }
+  ],
+  "realtime:openai:gpt-realtime": [
+    {
+      "name": "voice",
+      "value": "marin"
+    },
+    {
+      "name": "modalities",
+      "value": []
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "input_audio_transcription",
+      "value": ""
+    },
+    {
+      "name": "input_audio_noise_reduction",
+      "value": ""
+    },
+    {
+      "name": "turn_detection",
+      "value": ""
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "tracing",
+      "value": ""
+    },
+    {
+      "name": "truncation",
+      "value": ""
+    },
+    {
+      "name": "reasoning",
+      "value": ""
+    },
+    {
+      "name": "azure_deployment",
+      "value": ""
+    },
+    {
+      "name": "entra_token",
+      "value": ""
+    },
+    {
+      "name": "max_session_duration",
+      "value": 0.5
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    }
+  ],
+  "realtime:openai:gpt-realtime-mini": [
+    {
+      "name": "voice",
+      "value": "marin"
+    },
+    {
+      "name": "modalities",
+      "value": []
+    },
+    {
+      "name": "tool_choice",
+      "value": ""
+    },
+    {
+      "name": "input_audio_transcription",
+      "value": ""
+    },
+    {
+      "name": "input_audio_noise_reduction",
+      "value": ""
+    },
+    {
+      "name": "turn_detection",
+      "value": ""
+    },
+    {
+      "name": "speed",
+      "value": 0.5
+    },
+    {
+      "name": "tracing",
+      "value": ""
+    },
+    {
+      "name": "truncation",
+      "value": ""
+    },
+    {
+      "name": "reasoning",
+      "value": ""
+    },
+    {
+      "name": "azure_deployment",
+      "value": ""
+    },
+    {
+      "name": "entra_token",
+      "value": ""
+    },
+    {
+      "name": "max_session_duration",
+      "value": 0.5
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    }
+  ],
+  "realtime:google:gemini-2.5-flash-native-audio-preview-12-2025": [
+    {
+      "name": "instructions",
+      "value": ""
+    },
+    {
+      "name": "voice",
+      "value": "Puck"
+    },
+    {
+      "name": "language",
+      "value": ""
+    },
+    {
+      "name": "modalities",
+      "value": []
+    },
+    {
+      "name": "vertexai",
+      "value": false
+    },
+    {
+      "name": "project",
+      "value": ""
+    },
+    {
+      "name": "location",
+      "value": ""
+    },
+    {
+      "name": "candidate_count",
+      "value": 1
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "max_output_tokens",
+      "value": 1
+    },
+    {
+      "name": "top_p",
+      "value": 0.5
+    },
+    {
+      "name": "top_k",
+      "value": 1
+    },
+    {
+      "name": "presence_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "frequency_penalty",
+      "value": 0.5
+    },
+    {
+      "name": "input_audio_transcription",
+      "value": {}
+    },
+    {
+      "name": "output_audio_transcription",
+      "value": {}
+    },
+    {
+      "name": "image_encode_options",
+      "value": ""
+    },
+    {
+      "name": "enable_affective_dialog",
+      "value": false
+    },
+    {
+      "name": "proactivity",
+      "value": false
+    },
+    {
+      "name": "realtime_input_config",
+      "value": {}
+    },
+    {
+      "name": "context_window_compression",
+      "value": {}
+    },
+    {
+      "name": "tool_behavior",
+      "value": ""
+    },
+    {
+      "name": "tool_response_scheduling",
+      "value": ""
+    },
+    {
+      "name": "session_resumption",
+      "value": {}
+    },
+    {
+      "name": "api_version",
+      "value": ""
+    },
+    {
+      "name": "media_resolution",
+      "value": ""
+    },
+    {
+      "name": "thinking_config",
+      "value": {}
+    }
+  ],
+  "realtime:ultravox:fixie-ai/ultravox": [
+    {
+      "name": "voice",
+      "value": "Mark"
+    },
+    {
+      "name": "external_voice",
+      "value": {}
+    },
+    {
+      "name": "system_prompt",
+      "value": "You are a helpful assistant."
+    },
+    {
+      "name": "output_medium",
+      "value": ""
+    },
+    {
+      "name": "input_sample_rate",
+      "value": 16000
+    },
+    {
+      "name": "output_sample_rate",
+      "value": 24000
+    },
+    {
+      "name": "temperature",
+      "value": 0.5
+    },
+    {
+      "name": "language_hint",
+      "value": ""
+    },
+    {
+      "name": "max_duration",
+      "value": ""
+    },
+    {
+      "name": "time_exceeded_message",
+      "value": ""
+    },
+    {
+      "name": "enable_greeting_prompt",
+      "value": false
+    },
+    {
+      "name": "first_speaker",
+      "value": "FIRST_SPEAKER_USER"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+FROM python:3.11-slim
+ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
+WORKDIR /app
+COPY requirements-api.txt .
+RUN pip install -r requirements-api.txt
+COPY api ./api
+COPY app.py .
+RUN useradd --create-home bench && mkdir -p /app/data && chown -R bench:bench /app
+USER bench
+CMD ["sh", "-c", "exec uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}"]
