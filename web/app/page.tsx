@@ -934,14 +934,14 @@ export default function App() {
                         ),
                       )}
                       <label className="field">
-                        « Ouiii » / « OK » après une longue phrase de l’utilisateur · {Math.round(Number(config.natural.long_reply_ack ?? 0) * 100)} %
+                        « Oui / OK / Hum hum » après une longue phrase et une reprise · {Math.round(Number(config.natural.long_reply_ack ?? 0) * 100)} %
                         <input type="range" min="0" max="1" step="0.05"
                           value={Number(config.natural.long_reply_ack ?? 0)}
                           onChange={(e) => change("natural", { ...config.natural, long_reply_ack: Number(e.target.value) })}
                         />
                       </label>
                       <p className="muted">
-                        En mode pipeline, éternuements et raclements sont joués pendant la parole de l’utilisateur, indépendamment du mode « balises ». Les « Ouiii » / « OK » attendent une phrase transcrite d’au moins 25 mots. Les autres balises dépendent du TTS choisi.
+                        En mode pipeline, les éternuements et raclements sont des sons préenregistrés joués pendant la parole de l’utilisateur. Un acquiescement peut suivre une longue phrase, une courte pause et la reprise de l’appelant ; ce curseur règle sa fréquence. Les autres balises dépendent du TTS choisi.
                       </p>
                     </div>
                   </details>
@@ -987,7 +987,7 @@ export default function App() {
                       </label>
                       <label className="field">
                         Volume de l’ambiance · {Math.round(Number(config.background_volume ?? 0.15) * 100)} %
-                        <input type="range" min="0" max="0.5" step="0.01"
+                        <input type="range" min="0" max="1" step="0.01"
                           value={Number(config.background_volume ?? 0.15)}
                           onChange={(e) => change("background_volume", Number(e.target.value))}
                         />

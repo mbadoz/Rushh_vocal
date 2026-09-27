@@ -1,4 +1,4 @@
-import asyncio, json, logging, os, random, time
+import asyncio, json, logging, os, random
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -17,7 +17,9 @@ from livekit.agents import (
 from livekit.agents.voice import room_io
 from livekit.plugins import silero
 from .providers import build
-from .natural import long_user_phrase, prompt_suffix, translated_stream, translate
+from .natural import prompt_suffix, translated_stream, translate
+from .listening import BackchannelGate
+from .sounds import ambient_frames
 from .recording import Recorder
 from .telemetry import Collector
 
@@ -93,7 +95,6 @@ async def entrypoint(ctx: JobContext):
     bg = None
     effect_task = None
     acknowledgement_task = None
-    last_acknowledgement = 0.0
     finished = False
     fatal_error = None
 
@@ -224,9 +225,17 @@ async def entrypoint(ctx: JobContext):
 
         session.on("error", provider_error)
         session.on("metrics_collected", lambda event: stats.metric(event.metrics))
+        backchannels = BackchannelGate()
+
         def user_state(event):
-            nonlocal effect_task
+            nonlocal effect_task, acknowledgement_task
             stats.user_state(event.old_state, event.new_state)
+            should_acknowledge = backchannels.on_state(
+                event.old_state,
+                event.new_state,
+                config.get("natural", {}).get("long_reply_ack", 0)
+                if config["mode"] == "pipeline" else 0,
+            )
             if effect_task:
                 effect_task.cancel()
                 effect_task = None
@@ -236,37 +245,28 @@ async def entrypoint(ctx: JobContext):
                 if any(rate > 0 for _, rate in effects):
                     async def play_effect():
                         while session.user_state == "speaking":
-                            await asyncio.sleep(random.uniform(3.0, 7.0))
+                            await asyncio.sleep(random.uniform(2.0, 4.0))
                             if session.user_state != "speaking":
                                 break
                             for name, rate in effects:
                                 if random.random() < rate:
-                                    bg.play(AudioConfig(str(Path(__file__).parent / "assets" / (name + ".ogg")), volume=0.35))
+                                    bg.play(AudioConfig(str(Path(__file__).parent / "assets" / (name + ".ogg")), volume=0.9))
+                                    stats.events.append({"type": "listening_effect", "sound": name})
                                     break
                     effect_task = asyncio.create_task(play_effect())
+            if should_acknowledge and (not acknowledgement_task or acknowledgement_task.done()):
+                async def acknowledge():
+                    await asyncio.sleep(0.35)
+                    if session.user_state == "speaking" and session.agent_state == "listening":
+                        utterance = random.choice(("Oui.", "OK.", "Hum hum."))
+                        session.say(utterance, allow_interruptions=False, add_to_chat_ctx=False)
+                        stats.events.append({"type": "backchannel", "text": utterance})
+
+                acknowledgement_task = asyncio.create_task(acknowledge())
 
         session.on("user_state_changed", user_state)
         session.on("agent_state_changed", lambda event: stats.agent_state(event.new_state))
-
-        def user_transcript(event):
-            nonlocal acknowledgement_task, last_acknowledgement
-            rate = config.get("natural", {}).get("long_reply_ack", 0)
-            if (config["mode"] != "pipeline" or not rate or session.user_state != "speaking"
-                or not long_user_phrase(event.transcript)
-                or time.monotonic() - last_acknowledgement < 12
-                or acknowledgement_task and not acknowledgement_task.done()
-                or random.random() >= rate):
-                return
-            last_acknowledgement = time.monotonic()
-
-            async def acknowledge():
-                await asyncio.sleep(0.25)
-                if session.user_state == "speaking" and session.agent_state != "speaking":
-                    session.say(random.choice(("Ouiii.", "OK.")), allow_interruptions=False, add_to_chat_ctx=False)
-
-            acknowledgement_task = asyncio.create_task(acknowledge())
-
-        session.on("user_input_transcribed", user_transcript)
+        session.on("user_input_transcribed", lambda event: backchannels.on_transcript(event.transcript))
 
         def conversation(event):
             item = event.item
@@ -379,14 +379,9 @@ async def entrypoint(ctx: JobContext):
                 BuiltinAudioClip,
             )
 
-            ambience = {
-                "office": BuiltinAudioClip.OFFICE_AMBIENCE,
-                "city": BuiltinAudioClip.CITY_AMBIENCE,
-                "forest": BuiltinAudioClip.FOREST_AMBIENCE,
-                "crowd": BuiltinAudioClip.CROWDED_ROOM,
-            }.get(config.get("background_sound", "none"))
+            ambience = config.get("background_sound", "none")
             bg = BackgroundAudioPlayer(
-                ambient_sound=AudioConfig(ambience, volume=config.get("background_volume", 0.15)) if ambience else None,
+                ambient_sound=ambient_frames(ambience, config.get("background_volume", 0.15)) if ambience != "none" and config.get("background_volume", 0.15) > 0 else None,
                 thinking_sound=AudioConfig(BuiltinAudioClip.KEYBOARD_TYPING, volume=0.3) if config["thinking_sound"] else None,
             )
             await bg.start(room=ctx.room, agent_session=session)

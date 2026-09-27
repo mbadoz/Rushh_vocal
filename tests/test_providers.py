@@ -5,7 +5,11 @@ import pytest
 from api.catalog import CATALOG, DEFAULT
 from api.models import Composition
 from worker.providers import build, WireSession, SocketProxy, wire_payload
-from worker.natural import long_user_phrase, translate, translated_stream
+from worker.natural import translate, translated_stream
+from worker.listening import BackchannelGate
+from worker.sounds import amplify, ambient_frames
+from livekit import rtc
+import numpy as np
 from worker.telemetry import Collector
 
 
@@ -352,5 +356,40 @@ def test_background_and_listening_effects_validate_and_strip_sneeze_tag():
     assert "[[sneeze]]" not in translate(
         "Bonjour [[sneeze]]", "cartesia", "sonic-3.6", config["natural"]
     )
-    assert long_user_phrase(("Un mot est prononcé puis suivi d'autres. " * 5).strip())
-    assert not long_user_phrase("Je réfléchis encore et je continue")
+
+
+def test_backchannel_only_after_long_speech_short_pause_and_restart():
+    gate = BackchannelGate()
+    gate.on_state("listening", "speaking", 1, now=10)
+    gate.on_transcript("Ce projet comprend une cuisine ouverte, un séjour lumineux et plusieurs autres pièces. " * 3)
+    gate.on_state("speaking", "listening", 1, now=18)
+    assert gate.on_state("listening", "speaking", 1, now=18.6, rng=lambda: 0)
+    gate.on_state("speaking", "listening", 1, now=19)
+    assert not gate.on_state("listening", "speaking", 1, now=19.6, rng=lambda: 0)
+
+    gate = BackchannelGate()
+    gate.on_state("listening", "speaking", 1, now=10)
+    gate.on_transcript("Une phrase courte.")
+    gate.on_state("speaking", "listening", 1, now=12)
+    assert not gate.on_state("listening", "speaking", 1, now=12.5, rng=lambda: 0)
+    gate.on_transcript("Une très longue phrase qui continue avec des précisions supplémentaires sur le bien et les attentes du client.")
+    gate.on_state("speaking", "listening", 1, now=20)
+    assert not gate.on_state("listening", "speaking", 1, now=23, rng=lambda: 0)
+
+
+def test_ambience_gain_and_recorded_effects():
+    frame = rtc.AudioFrame(
+        data=np.array([1000, -1000, 16000, -16000], dtype=np.int16).tobytes(),
+        sample_rate=48000, num_channels=1, samples_per_channel=4,
+    )
+    assert np.frombuffer(amplify(frame, 3).data, dtype=np.int16).tolist() == [3000, -3000, 32767, -32768]
+
+    async def scenario():
+        source = ambient_frames("office", 1)
+        try:
+            frame = await anext(source)
+            assert frame.sample_rate == 48000
+        finally:
+            await source.aclose()
+
+    asyncio.run(scenario())
