@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import {
   LiveKitRoom,
   RoomAudioRenderer,
@@ -202,6 +202,48 @@ export default function App() {
     [sort, setSort] = useState("eur_per_min"),
     [filter, setFilter] = useState(""),
     [listen, setListen] = useState<string[]>([]);
+  const [microphones, setMicrophones] = useState<MediaDeviceInfo[]>([]),
+    [microphoneId, setMicrophoneId] = useState(""),
+    [microphoneBusy, setMicrophoneBusy] = useState(false);
+  const microphoneOptions = useMemo(
+    () => ({ deviceId: { exact: microphoneId } }),
+    [microphoneId],
+  );
+  const onRoomError = useCallback((e: Error) => setError(e.message), []);
+  const detectMicrophones = async () => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setError(
+        "Le microphone nécessite un navigateur récent et une page HTTPS.",
+      );
+      return;
+    }
+    setMicrophoneBusy(true);
+    setError("");
+    let stream: MediaStream | undefined;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const devices = (await navigator.mediaDevices.enumerateDevices()).filter(
+        (device) => device.kind === "audioinput" && device.deviceId,
+      );
+      const physical = devices.filter(
+        (device) => !["default", "communications"].includes(device.deviceId),
+      );
+      const available = physical.length ? physical : devices;
+      setMicrophones(available);
+      setMicrophoneId((id) =>
+        available.some((device) => device.deviceId === id) ? id : "",
+      );
+      if (!available.length)
+        setError("Aucun microphone détecté sur cet appareil.");
+    } catch (e) {
+      setError(
+        `Accès au microphone impossible : ${(e as Error).message}. Vérifiez l'autorisation du navigateur.`,
+      );
+    } finally {
+      stream?.getTracks().forEach((track) => track.stop());
+      setMicrophoneBusy(false);
+    }
+  };
   const execute = useCallback(async (fn: () => Promise<void>) => {
     setBusy(true);
     setError("");
@@ -286,6 +328,12 @@ export default function App() {
   };
   const start = () =>
     execute(async () => {
+      if (!microphoneId) {
+        setTab("Tester");
+        throw new Error(
+          "Choisissez le microphone de votre ordinateur avant de commencer.",
+        );
+      }
       const id = await save();
       const r = await api("/runs", "POST", { composition_id: id });
       setCall(r);
@@ -990,7 +1038,14 @@ export default function App() {
                   <button
                     className="primary"
                     disabled={busy || !ready || !!call}
-                    onClick={start}
+                    onClick={() => {
+                      if (!microphoneId) {
+                        setTab("Tester");
+                        setNotice(
+                          "Choisissez le microphone de votre ordinateur.",
+                        );
+                      } else start();
+                    }}
                   >
                     <Mic size={16} />
                     Tester cette composition
@@ -1009,11 +1064,17 @@ export default function App() {
                       token={call.token}
                       serverUrl={call.url}
                       connect
-                      audio
+                      audio={microphoneOptions}
                       video={false}
-                      onError={(e) => setError(e.message)}
+                      onError={onRoomError}
                     >
                       <VoiceStatus />
+                      <p className="muted">
+                        Micro utilisé :{" "}
+                        {microphones.find(
+                          (device) => device.deviceId === microphoneId,
+                        )?.label || "micro sélectionné"}
+                      </p>
                       <button className="danger" disabled={busy} onClick={stop}>
                         <Square size={16} />
                         Terminer l’essai
@@ -1026,10 +1087,42 @@ export default function App() {
                       </div>
                       <h2>Testez en conditions réelles.</h2>
                       <p className="muted">
-                        Autorisez votre micro et échangez avec votre agent.
+                        Choisissez le micro de votre ordinateur et échangez avec
+                        votre agent.
                         <br />
                         Un casque est recommandé.
                       </p>
+                      <button
+                        className="secondary"
+                        disabled={microphoneBusy}
+                        onClick={detectMicrophones}
+                      >
+                        <Mic size={16} />
+                        {microphoneBusy
+                          ? "Recherche des micros…"
+                          : "Détecter les micros"}
+                      </button>
+                      {microphones.length > 0 && (
+                        <label className="field">
+                          Microphone utilisé
+                          <select
+                            value={microphoneId}
+                            onChange={(e) => setMicrophoneId(e.target.value)}
+                          >
+                            <option value="" disabled>
+                              Choisir le micro du PC
+                            </option>
+                            {microphones.map((device) => (
+                              <option
+                                key={device.deviceId}
+                                value={device.deviceId}
+                              >
+                                {device.label || "Microphone sans nom"}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      )}
                       <label className="field">
                         Composition
                         <select
@@ -1045,7 +1138,7 @@ export default function App() {
                       </label>
                       <button
                         className="primary"
-                        disabled={busy || !ready}
+                        disabled={busy || !ready || !microphoneId}
                         onClick={start}
                       >
                         <Mic size={17} />

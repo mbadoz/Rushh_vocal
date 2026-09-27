@@ -24,6 +24,8 @@ make worker
 
 Ouvrir **http://127.0.0.1:3000** et se connecter avec `BENCH_PASSWORD`. L’API écoute sur `127.0.0.1:8000` ; Next.js lui transmet `/api/*`. `FRONTEND_ORIGIN` doit correspondre exactement à l’adresse utilisée dans le navigateur.
 
+Pour un essai web sur ordinateur, ouvrir **Tester**, cliquer sur **Détecter les micros** puis choisir explicitement le micro du PC avant de commencer. Si macOS propose aussi le micro de l’iPhone, choisir le micro du Mac dans la liste. Le navigateur transmet uniquement le périphérique choisi à LiveKit ; aucun appel téléphonique n'est nécessaire.
+
 Dans **Clés API**, ajouter vos clés Cartesia et Groq, puis sélectionner **Clé enregistrée** pour ces briques dans Composer. La composition initiale utilise Cartesia Ink 2 → Groq GPT-OSS 20B → Cartesia Sonic 3.6. Les voix et modèles dépendent de leur disponibilité dans vos comptes. Les clés de fournisseurs peuvent aussi rester dans `.env` : choisir alors **Clé environnement**. Les clés du POC parent ne sont pas chargées implicitement.
 
 Les LLM Groq `llama-3.1-8b-instant`, `openai/gpt-oss-20b` et `openai/gpt-oss-safeguard-20b`, ainsi que Mistral `mistral-small-latest`, sont sélectionnables. Groq classe Safeguard comme modèle de prévisualisation spécialisé dans la classification de sécurité ; Llama 3.1 8B affiche un tarif « Contact Sales », donc son prix reste à saisir dans l'application. `mistral-small-latest` est un alias mobile : son tarif initial est une estimation à revoir selon la version et votre contrat.
