@@ -19,7 +19,7 @@ from livekit.plugins import silero
 from .providers import build
 from .natural import prompt_suffix, translated_stream, translate
 from .listening import BackchannelGate
-from .sounds import ambient_frames
+from .sounds import LISTENING_EFFECTS, ambient_frames, listening_effect
 from .recording import Recorder
 from .telemetry import Collector
 
@@ -94,6 +94,7 @@ async def entrypoint(ctx: JobContext):
     timer = None
     bg = None
     effect_task = None
+    effect_handle = None
     acknowledgement_task = None
     finished = False
     fatal_error = None
@@ -228,7 +229,7 @@ async def entrypoint(ctx: JobContext):
         backchannels = BackchannelGate()
 
         def user_state(event):
-            nonlocal effect_task, acknowledgement_task
+            nonlocal effect_task, effect_handle, acknowledgement_task
             stats.user_state(event.old_state, event.new_state)
             should_acknowledge = backchannels.on_state(
                 event.old_state,
@@ -239,20 +240,26 @@ async def entrypoint(ctx: JobContext):
             if effect_task:
                 effect_task.cancel()
                 effect_task = None
+            if effect_handle:
+                effect_handle.stop()
+                effect_handle = None
             if event.new_state == "speaking" and bg and config["mode"] == "pipeline":
                 rates = config.get("natural", {}).get("tags", {})
-                effects = [(name, float(rates.get(name, 0))) for name in ("sneeze", "throat")]
+                effects = [(name, float(rates.get(name, 0))) for name in LISTENING_EFFECTS]
                 if any(rate > 0 for _, rate in effects):
                     async def play_effect():
+                        nonlocal effect_handle
                         while session.user_state == "speaking":
                             await asyncio.sleep(random.uniform(2.0, 4.0))
                             if session.user_state != "speaking":
                                 break
-                            for name, rate in effects:
-                                if random.random() < rate:
-                                    bg.play(AudioConfig(str(Path(__file__).parent / "assets" / (name + ".ogg")), volume=0.9))
-                                    stats.events.append({"type": "listening_effect", "sound": name})
-                                    break
+                            chosen = [name for name, rate in effects if random.random() < rate]
+                            if chosen:
+                                name = random.choice(chosen)
+                                effect_handle = bg.play(listening_effect(name))
+                                stats.events.append({"type": "listening_effect", "sound": name})
+                                await effect_handle.wait_for_playout()
+                                effect_handle = None
                     effect_task = asyncio.create_task(play_effect())
             if should_acknowledge and (not acknowledgement_task or acknowledgement_task.done()):
                 async def acknowledge():
@@ -371,7 +378,7 @@ async def entrypoint(ctx: JobContext):
         )
         if config["thinking_sound"] or config.get("background_sound", "none") != "none" or any(
             config.get("natural", {}).get("tags", {}).get(name, 0) > 0
-            for name in ("sneeze", "throat")
+            for name in LISTENING_EFFECTS
         ):
             from livekit.agents import (
                 BackgroundAudioPlayer,

@@ -7,7 +7,8 @@ from api.models import Composition
 from worker.providers import build, WireSession, SocketProxy, wire_payload
 from worker.natural import translate, translated_stream
 from worker.listening import BackchannelGate, BackchannelSettings
-from worker.sounds import amplify, ambient_frames
+from worker.sounds import LISTENING_EFFECTS, amplify, ambient_frames, listening_effect
+from livekit.agents.utils.audio import audio_frames_from_file
 from livekit import rtc
 import numpy as np
 from worker.telemetry import Collector
@@ -88,6 +89,35 @@ def test_cartesia_integer_speed_is_accepted_by_sonic_3_plugin():
         try:
             assert obj._opts.speed == 1.0
             assert isinstance(obj._opts.speed, float)
+        finally:
+            await obj.aclose()
+
+    asyncio.run(scenario())
+
+
+def test_cartesia_sonic_36_inference_keeps_voice_without_cartesia_key():
+    entry = next(x for x in CATALOG if x["id"] == "tts:cartesia:sonic-3.6")
+    assert entry["inference"]
+    assert entry["inference_params"]["voice"] == entry["params"]["voice"]
+    assert "api_version" not in entry["inference_params"]
+
+    async def scenario():
+        obj = await build(
+            "tts",
+            {
+                "provider": "cartesia",
+                "model": "sonic-3.6",
+                "source": "inference",
+                "params": {**entry["inference_params"], "voice": "custom-voice", "speed": 1.2},
+                "raw": {},
+            },
+            {},
+            [],
+        )
+        try:
+            assert obj._opts.model == "cartesia/sonic-3.6"
+            assert obj._opts.voice == "custom-voice"
+            assert obj._opts.extra_kwargs["speed"] == 1.2
         finally:
             await obj.aclose()
 
@@ -420,4 +450,21 @@ def test_ambience_gain_and_recorded_effects():
         finally:
             await source.aclose()
 
+    asyncio.run(scenario())
+
+
+def test_supplied_listening_effects_decode_and_have_conservative_gain():
+    async def scenario():
+        for name in ("throat", "cough", "whisper"):
+            effect = listening_effect(name)
+            assert effect.volume <= 0.75
+            assert effect.fade_in > 0 and effect.fade_out > 0
+            source = audio_frames_from_file(effect.source)
+            try:
+                frame = await anext(source)
+                assert frame.samples_per_channel > 0
+            finally:
+                await source.aclose()
+
+    assert len(LISTENING_EFFECTS) == 4
     asyncio.run(scenario())

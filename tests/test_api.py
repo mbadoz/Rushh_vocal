@@ -1,5 +1,5 @@
 from copy import deepcopy
-from api.catalog import DEFAULT
+from api.catalog import CATALOG, DEFAULT
 from api.store import db, get
 from api.main import new_run
 
@@ -54,6 +54,25 @@ def test_encrypted_key_no_readback(client):
         value = get(s, "key:soniox")
         assert secret not in str(value)
     assert client.delete("/api/keys/soniox").status_code == 200
+
+
+def test_cartesia_inference_run_needs_no_cartesia_tts_key(client):
+    config = deepcopy(DEFAULT)
+    entry = next(x for x in CATALOG if x["id"] == "tts:cartesia:sonic-3.6")
+    config["tts"]["source"] = "inference"
+    config["tts"]["params"] = deepcopy(entry["inference_params"])
+    config["tts"]["params"]["voice"] = "custom-voice"
+    with db() as s:
+        run = new_run(s, config, "web")
+    claim = client.post(
+        "/internal/claim", headers=WORKER,
+        json={"run_id": run["id"], "room": run["room"]},
+    )
+    assert claim.status_code == 200, claim.text
+    assert "tts" not in claim.json()["credentials"]
+    assert claim.json()["credentials"]["stt"]["key"] == "env-cartesia-test"
+    assert claim.json()["run"]["config"]["tts"]["params"]["voice"] == "custom-voice"
+    assert run["price_snapshot"]["tts:cartesia:sonic-3.6:inference"]["rates"]["characters"] == 50 / 1e6
 
 
 def test_snapshot_telemetry_notes_and_claim_idempotency(client):

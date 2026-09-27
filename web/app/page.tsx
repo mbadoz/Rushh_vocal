@@ -76,8 +76,21 @@ const ms = (n: number | undefined | null) =>
   n == null ? "—" : Math.round(n) + " ms";
 const naturalTags: Record<string, string> = {
   breath: "Respiration", sigh: "Soupir", throat: "Raclement de gorge",
-  sneeze: "Éternuement", laugh: "Rire", short_pause: "Pause courte",
+  sneeze: "Éternuement", cough: "Toux", whisper: "Chuchotement",
+  laugh: "Rire", short_pause: "Pause courte",
   long_pause: "Pause longue",
+};
+const cartesiaTtsParams = (entry: Obj, current: Obj, source: string) => {
+  const params: Obj = structuredClone(
+    source === "inference" ? (entry.inference_params ?? {}) : entry.params,
+  );
+  for (const key of ["voice", "language", "speed", "volume", "sample_rate", "max_buffer_delay_ms"]) {
+    if (key in params && key in (current.params ?? {})) params[key] = current.params[key];
+  }
+  const timestamps = current.params?.add_timestamps ?? current.params?.word_timestamps;
+  const timestampKey = source === "inference" ? "add_timestamps" : "word_timestamps";
+  if (timestamps !== undefined && timestampKey in params) params[timestampKey] = timestamps;
+  return params;
 };
 const withAudioDefaults = (source: Obj, defaults: Obj) => ({
   ...source,
@@ -724,7 +737,9 @@ export default function App() {
                             change(kind, {
                               ...b,
                               model: m.model,
-                              params: structuredClone(m.params),
+                              params: kind === "tts" && b.provider === "cartesia"
+                                ? cartesiaTtsParams(m, b, b.source)
+                                : structuredClone(b.source === "inference" ? (m.inference_params ?? {}) : m.params),
                               raw: {},
                             });
                           }}
@@ -740,18 +755,18 @@ export default function App() {
                         Accès
                         <select
                           value={b.source}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const source = e.target.value;
                             change(kind, {
                               ...b,
-                              source: e.target.value,
-                              params: structuredClone(
-                                e.target.value === "inference"
-                                  ? (entry?.inference_params ?? {})
-                                  : entry?.params,
-                              ),
+                              source,
+                              params: kind === "tts" && b.provider === "cartesia"
+                                ? cartesiaTtsParams(entry, b, source)
+                                : structuredClone(source === "inference"
+                                  ? (entry?.inference_params ?? {}) : entry?.params),
                               raw: {},
-                            })
-                          }
+                            });
+                          }}
                         >
                           <option
                             value="env"
@@ -766,7 +781,7 @@ export default function App() {
                             Clé enregistrée
                           </option>
                           {entry?.inference && (
-                            <option value="inference">LiveKit Inference</option>
+                            <option value="inference">{kind === "tts" && b.provider === "cartesia" ? "Cartesia via LiveKit · facturation LiveKit" : "LiveKit Inference"}</option>
                           )}
                         </select>
                       </label>

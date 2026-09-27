@@ -349,7 +349,10 @@ for entry in CATALOG:
         for key in ("api_version", "locale", "normalization"):
             params.pop(key, None)
         params["add_timestamps"] = params.pop("word_timestamps")
-        if entry["model"] not in ("sonic-3.5", "sonic-3", "sonic-2", "sonic-turbo"):
+        if entry["model"] not in (
+            "sonic-3.6", "sonic-3.6-2026-08-27", "sonic-3.5", "sonic-3",
+            "sonic-2", "sonic-turbo",
+        ):
             entry["inference"] = False
     if entry["provider"] == "deepgram":
         if "endpointing_ms" in params:
@@ -420,6 +423,8 @@ DEFAULT = dict(
             "sigh": 0,
             "throat": 0,
             "sneeze": 0,
+            "cough": 0,
+            "whisper": 0,
             "laugh": 0,
             "short_pause": 0.1,
             "long_pause": 0,
@@ -537,15 +542,19 @@ def prices():
             )
         )
         if c["inference"] and c["provider"] != "livekit":
+            cartesia_tts = c["provider"] == "cartesia" and c["kind"] == "tts"
             out.append(
                 dict(
                     id=c["id"] + ":inference",
                     currency="USD",
-                    rates={},
+                    rates={"characters": 50 / 1e6} if cartesia_tts else {},
                     source=PRICE_SOURCES["livekit"],
-                    checked_at=None,
-                    status="unknown",
-                    note="Tarif Inference distinct du tarif direct.",
+                    checked_at="2026-09-27" if cartesia_tts else None,
+                    status="verified" if cartesia_tts else "unknown",
+                    note=(
+                        "LiveKit Build/Ship : 50 $/million de caractères ; Scale : 37,50 $."
+                        if cartesia_tts else "Tarif Inference distinct du tarif direct."
+                    ),
                 )
             )
     for key in [

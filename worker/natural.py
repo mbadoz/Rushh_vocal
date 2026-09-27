@@ -27,7 +27,7 @@ def translate(text, provider, model, options, rng=random.random):
         return supported.get(tag, "") if rates.get(tag, 0) > 0 else ""
 
     text = re.sub(
-        r"\[\[(breath|sigh|throat|sneeze|laugh|short_pause|long_pause)\]\]", replace, text
+        r"\[\[(breath|sigh|throat|sneeze|cough|whisper|laugh|short_pause|long_pause)\]\]", replace, text
     )
     if options.get("mode") in ("rules", "both"):
         for tag, rate in rates.items():
@@ -50,7 +50,7 @@ def prompt_suffix(options):
         tags = [
             f"[[{k}]] (environ {v:.0%} des tours)"
             for k, v in options.get("tags", {}).items()
-            if v > 0 and k not in ("sneeze", "throat")
+            if v > 0 and k not in ("sneeze", "throat", "cough", "whisper")
         ]
         if tags:
             suffix += (

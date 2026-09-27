@@ -1,8 +1,9 @@
 """Bring LiveKit's quiet ambience clips to a useful, consistent listening level."""
 
 import numpy as np
+from pathlib import Path
 from livekit import rtc
-from livekit.agents import BuiltinAudioClip
+from livekit.agents import AudioConfig, BuiltinAudioClip
 from livekit.agents.utils.audio import audio_frames_from_file
 
 
@@ -12,6 +13,23 @@ AMBIENCE = {
     "forest": (BuiltinAudioClip.FOREST_AMBIENCE, 14.0),
     "crowd": (BuiltinAudioClip.CROWDED_ROOM, 1.3),
 }
+
+LISTENING_EFFECTS = {
+    "sneeze": ("sneeze.ogg", 0.4),
+    "throat": ("throat.wav", 0.32),
+    "cough": ("cough.wav", 0.32),
+    "whisper": ("whisper.wav", 0.75),
+}
+
+
+def listening_effect(name: str) -> AudioConfig:
+    filename, volume = LISTENING_EFFECTS[name]
+    return AudioConfig(
+        str(Path(__file__).parent / "assets" / filename),
+        volume=volume,
+        fade_in=0.08,
+        fade_out=0.15,
+    )
 
 
 def amplify(frame: rtc.AudioFrame, gain: float) -> rtc.AudioFrame:
