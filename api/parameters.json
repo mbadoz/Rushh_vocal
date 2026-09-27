@@ -1242,6 +1242,14 @@
     { "name": "top_p", "value": 1 },
     { "name": "max_completion_tokens", "value": 300 }
   ],
+  "llm:openrouter:openai/gpt-oss-20b": [
+    { "name": "reasoning_effort", "value": "low" },
+    { "name": "max_completion_tokens", "value": 300 }
+  ],
+  "llm:openrouter:openai/gpt-oss-120b": [
+    { "name": "reasoning_effort", "value": "low" },
+    { "name": "max_completion_tokens", "value": 300 }
+  ],
   "llm:groq:llama-3.1-8b-instant": [
     {
       "name": "user",

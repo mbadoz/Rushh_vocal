@@ -934,14 +934,14 @@ export default function App() {
                         ),
                       )}
                       <label className="field">
-                        « Oui / OK / Hum hum » après une longue phrase et une reprise · {Math.round(Number(config.natural.long_reply_ack ?? 0) * 100)} %
+                        « Oui / OK / Hum hum » pendant la parole de l’appelant · {Math.round(Number(config.natural.long_reply_ack ?? 0) * 100)} %
                         <input type="range" min="0" max="1" step="0.05"
                           value={Number(config.natural.long_reply_ack ?? 0)}
                           onChange={(e) => change("natural", { ...config.natural, long_reply_ack: Number(e.target.value) })}
                         />
                       </label>
                       <p className="muted">
-                        En mode pipeline, les éternuements et raclements sont des sons préenregistrés joués pendant la parole de l’utilisateur. Un acquiescement peut suivre une longue phrase, une courte pause et la reprise de l’appelant ; ce curseur règle sa fréquence. Les autres balises dépendent du TTS choisi.
+                        En mode pipeline, les éternuements et raclements sont des sons préenregistrés joués pendant la parole de l’utilisateur. Les acquiescements peuvent suivre une pause puis une reprise de l’appelant : 30 % correspond à l’ancien maximum ; au-delà, les phrases plus courtes et les pauses plus longues deviennent éligibles, avec moins d’attente entre deux acquiescements. Les autres balises dépendent du TTS choisi.
                       </p>
                     </div>
                   </details>

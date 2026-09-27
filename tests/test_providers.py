@@ -2,11 +2,11 @@ import asyncio, json
 from copy import deepcopy
 from unittest.mock import AsyncMock
 import pytest
-from api.catalog import CATALOG, DEFAULT
+from api.catalog import CATALOG, DEFAULT, prices
 from api.models import Composition
 from worker.providers import build, WireSession, SocketProxy, wire_payload
 from worker.natural import translate, translated_stream
-from worker.listening import BackchannelGate
+from worker.listening import BackchannelGate, BackchannelSettings
 from worker.sounds import amplify, ambient_frames
 from livekit import rtc
 import numpy as np
@@ -329,13 +329,18 @@ def test_disabled_natural_mode_removes_tags():
     )
 
 
-def test_openrouter_llama_uses_openai_compatible_endpoint():
+@pytest.mark.parametrize("model,params", [
+    ("meta-llama/llama-3.3-70b-instruct", {"temperature": 0.4, "max_completion_tokens": 300}),
+    ("openai/gpt-oss-20b", {"reasoning_effort": "low", "max_completion_tokens": 300}),
+    ("openai/gpt-oss-120b", {"reasoning_effort": "low", "max_completion_tokens": 300}),
+])
+def test_openrouter_models_use_openai_compatible_endpoint(model, params):
     async def scenario():
         block = {
             "provider": "openrouter",
-            "model": "meta-llama/llama-3.3-70b-instruct",
+            "model": model,
             "source": "env",
-            "params": {"temperature": 0.4, "max_completion_tokens": 300},
+            "params": params,
             "raw": {},
         }
         obj = await build("llm", block, {"key": "test-only"}, [])
@@ -346,6 +351,13 @@ def test_openrouter_llama_uses_openai_compatible_endpoint():
             await obj.aclose()
 
     asyncio.run(scenario())
+
+
+def test_openrouter_oss_prices_are_distinct_from_groq():
+    rates = {item["id"]: item["rates"] for item in prices()}
+    assert rates["llm:openrouter:openai/gpt-oss-20b"]["input_tokens"] == 0.018 / 1e6
+    assert rates["llm:openrouter:openai/gpt-oss-120b"]["output_tokens"] == 0.17 / 1e6
+    assert rates["llm:groq:openai/gpt-oss-20b"]["input_tokens"] != rates["llm:openrouter:openai/gpt-oss-20b"]["input_tokens"]
 
 
 def test_background_and_listening_effects_validate_and_strip_sneeze_tag():
@@ -360,21 +372,37 @@ def test_background_and_listening_effects_validate_and_strip_sneeze_tag():
 
 def test_backchannel_only_after_long_speech_short_pause_and_restart():
     gate = BackchannelGate()
-    gate.on_state("listening", "speaking", 1, now=10)
+    gate.on_state("listening", "speaking", 0.3, now=10)
     gate.on_transcript("Ce projet comprend une cuisine ouverte, un séjour lumineux et plusieurs autres pièces. " * 3)
-    gate.on_state("speaking", "listening", 1, now=18)
-    assert gate.on_state("listening", "speaking", 1, now=18.6, rng=lambda: 0)
-    gate.on_state("speaking", "listening", 1, now=19)
-    assert not gate.on_state("listening", "speaking", 1, now=19.6, rng=lambda: 0)
+    gate.on_state("speaking", "listening", 0.3, now=18)
+    assert gate.on_state("listening", "speaking", 0.3, now=18.6, rng=lambda: 0)
+    gate.on_state("speaking", "listening", 0.3, now=19)
+    assert not gate.on_state("listening", "speaking", 0.3, now=19.6, rng=lambda: 0)
+
+    gate = BackchannelGate()
+    gate.on_state("listening", "speaking", 0.3, now=10)
+    gate.on_transcript("Une phrase courte.")
+    gate.on_state("speaking", "listening", 0.3, now=12)
+    assert not gate.on_state("listening", "speaking", 0.3, now=12.5, rng=lambda: 0)
+    gate.on_transcript("Une très longue phrase qui continue avec des précisions supplémentaires sur le bien et les attentes du client.")
+    gate.on_state("speaking", "listening", 0.3, now=20)
+    assert not gate.on_state("listening", "speaking", 0.3, now=23, rng=lambda: 0)
+
+
+def test_backchannel_slider_recalibration():
+    old_max = BackchannelSettings.from_slider(0.3)
+    assert old_max == BackchannelSettings(1, 18, 6, 1.8, 8)
+    assert BackchannelSettings.from_slider(0.15).probability == 0.5
+    maximum = BackchannelSettings.from_slider(1)
+    assert maximum == BackchannelSettings(1, 6, 2, 2.5, 2.2)
 
     gate = BackchannelGate()
     gate.on_state("listening", "speaking", 1, now=10)
-    gate.on_transcript("Une phrase courte.")
-    gate.on_state("speaking", "listening", 1, now=12)
-    assert not gate.on_state("listening", "speaking", 1, now=12.5, rng=lambda: 0)
-    gate.on_transcript("Une très longue phrase qui continue avec des précisions supplémentaires sur le bien et les attentes du client.")
-    gate.on_state("speaking", "listening", 1, now=20)
-    assert not gate.on_state("listening", "speaking", 1, now=23, rng=lambda: 0)
+    gate.on_transcript("Un discours contient maintenant juste assez de mots pour relancer la conversation.")
+    gate.on_state("speaking", "listening", 1, now=12.5)
+    assert gate.on_state("listening", "speaking", 1, now=14.5, rng=lambda: 0)
+    gate.on_state("speaking", "listening", 1, now=17)
+    assert gate.on_state("listening", "speaking", 1, now=17.5, rng=lambda: 0)
 
 
 def test_ambience_gain_and_recorded_effects():

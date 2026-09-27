@@ -210,6 +210,12 @@ add(
 )
 add(
     "llm",
+    "openrouter",
+    "openai/gpt-oss-20b|openai/gpt-oss-120b",
+    dict(reasoning_effort="low", max_completion_tokens=300),
+)
+add(
+    "llm",
     "google",
     "gemini-3.7-flash|gemini-3.8-flash",
     dict(
@@ -482,6 +488,11 @@ def prices():
                 rates = {"audio_seconds": p / 60}
         if c["kind"] == "llm" and c["model"] in llm:
             a, b = llm[c["model"]]
+            if c["provider"] == "openrouter":
+                a, b = {
+                    "openai/gpt-oss-20b": (0.018, 0.09),
+                    "openai/gpt-oss-120b": (0.03, 0.17),
+                }.get(c["model"], (a, b))
             rates = {
                 "input_tokens": a / 1e6,
                 "output_tokens": b / 1e6,
@@ -564,6 +575,17 @@ def prices():
                 checked_at="2026-09-26",
                 note="Entrée/sortie vérifiées sur Groq Models ; cache à préciser selon votre accès.",
                 status="verified",
+            )
+            price["rates"].pop("cached_tokens", None)
+        if price["id"] in (
+            "llm:openrouter:openai/gpt-oss-20b",
+            "llm:openrouter:openai/gpt-oss-120b",
+        ):
+            price.update(
+                source="https://openrouter.ai/" + price["id"].split(":", 2)[2],
+                checked_at="2026-09-27",
+                status="estimate",
+                note="Prix du fournisseur le moins cher affiché par OpenRouter ; le coût réel dépend du routage.",
             )
             price["rates"].pop("cached_tokens", None)
         if price["id"] == "llm:groq:llama-3.1-8b-instant":
