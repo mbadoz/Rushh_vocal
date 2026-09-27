@@ -27,7 +27,14 @@ def wire_payload(provider, kind, payload, raw):
     if not isinstance(payload, dict):
         return payload
     if provider == "cartesia" and kind == "tts":
-        return merge(payload, raw) if "model_id" in payload else payload
+        if "model_id" not in payload:
+            return payload
+        result = merge(payload, raw)
+        # Cartesia accepts language or locale, never both. The plugin adds
+        # language while the bench may supply a more specific locale.
+        if result.get("locale"):
+            result.pop("language", None)
+        return result
     if provider == "openai" and kind == "realtime":
         if payload.get("type") == "session.update":
             return merge(payload, {"session": raw})

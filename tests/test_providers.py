@@ -89,6 +89,14 @@ def test_cartesia_integer_speed_is_accepted_by_sonic_3_plugin():
     asyncio.run(scenario())
 
 
+def test_cartesia_locale_replaces_plugin_language_on_wire():
+    base = {"model_id": "sonic-3.5", "language": "fr", "transcript": "Bonjour"}
+    sent = wire_payload("cartesia", "tts", base, {"locale": "fr-FR"})
+    assert sent["locale"] == "fr-FR"
+    assert "language" not in sent
+    assert base["language"] == "fr"
+
+
 def test_openai_compatible_extra_body_reaches_sdk():
     async def scenario():
         from livekit.agents import llm
