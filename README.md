@@ -30,6 +30,10 @@ Dans **Clés API**, ajouter vos clés Cartesia et Groq, puis sélectionner **Cl�
 
 Les LLM Groq `llama-3.1-8b-instant`, `openai/gpt-oss-20b` et `openai/gpt-oss-safeguard-20b`, ainsi que Mistral `mistral-small-latest`, sont sélectionnables. Groq classe Safeguard comme modèle de prévisualisation spécialisé dans la classification de sécurité ; Llama 3.1 8B affiche un tarif « Contact Sales », donc son prix reste à saisir dans l'application. `mistral-small-latest` est un alias mobile : son tarif initial est une estimation à revoir selon la version et votre contrat.
 
+OpenRouter propose aussi `meta-llama/llama-3.3-70b-instruct`. Ajoutez une clé OpenRouter dans **Clés API** ou renseignez `OPENROUTER_API_KEY` sur l’API, puis choisissez OpenRouter et Llama 3.3 dans la brique LLM de Composer. Le tarif du catalogue est une estimation révisable dans **Prix**.
+
+Dans Composer, **Détection, interruptions & audio** permet de choisir une ambiance continue (bureau, ville, forêt ou salle animée) et son volume. Sous **Naturel & balises vocales**, réglez la fréquence des éternuements et raclements de gorge pendant la parole de l’utilisateur, ainsi que celle des « Ouiii » / « OK » après une phrase transcrite d’au moins 25 mots. Ces trois curseurs sont à zéro par défaut ; montez-les pour activer les effets. Les acquiescements demandent un pipeline STT/LLM/TTS, une transcription ponctuée et une parole utilisateur encore en cours ; ils ne sont pas garantis sur chaque longue phrase. Les effets sonores sont séparés de la voix TTS et restent disponibles avec tous les TTS du pipeline.
+
 Pour le détecteur de tours multilingue, télécharger les modèles une fois :
 
 ```sh

@@ -39,7 +39,7 @@ R2_SECRET_ACCESS_KEY=<secret-r2>
 R2_BUCKET=<bucket-privé>
 ```
 
-Le nom du service PostgreSQL dans l'expression Railway doit correspondre exactement à celui affiché dans votre projet. `FRONTEND_ORIGIN` est l'URL exacte ouverte dans le navigateur, avec `https://` et sans slash final. Il faut parfois déployer une première fois pour obtenir les domaines, renseigner les deux URL croisées, puis redéployer.
+Le nom du service PostgreSQL dans l'expression Railway doit correspondre exactement à celui affiché dans votre projet. Définir `DATABASE_URL` dans les **variables du service API**, puis appliquer les changements en attente et redéployer ce service. Sans cette variable, l'API ne démarre plus sur Railway : elle évite ainsi de créer une base SQLite éphémère à la place de PostgreSQL. `FRONTEND_ORIGIN` est l'URL exacte ouverte dans le navigateur, avec `https://` et sans slash final. Il faut parfois déployer une première fois pour obtenir les domaines, renseigner les deux URL croisées, puis redéployer.
 
 Dans le service **worker** :
 
@@ -56,7 +56,7 @@ R2_SECRET_ACCESS_KEY=<même valeur que l'API>
 R2_BUCKET=<même valeur que l'API>
 ```
 
-Générer les trois secrets indépendamment avec `python -c 'import secrets; print(secrets.token_urlsafe(48))'` (utiliser une sortie différente pour chacun) et la clé Fernet avec `python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())'`. Conserver `ENCRYPTION_KEY` stable après l'ajout de clés fournisseurs dans l'application. Les clés Groq, Cartesia, Mistral et des autres fournisseurs peuvent être entrées dans **Clés API** après connexion, ou définies sur **l'API Railway** avec les noms de `.env.example` et sélectionnées comme « Clé environnement » dans Composer. Elles ne sont pas nécessaires sur le worker.
+Générer les trois secrets indépendamment avec `python -c 'import secrets; print(secrets.token_urlsafe(48))'` (utiliser une sortie différente pour chacun) et la clé Fernet avec `python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())'`. Conserver `ENCRYPTION_KEY` stable après l'ajout de clés fournisseurs dans l'application. Les clés Groq, Cartesia, Mistral, OpenRouter et des autres fournisseurs peuvent être entrées dans **Clés API** après connexion, ou définies sur **l'API Railway** avec les noms de `.env.example` (dont `OPENROUTER_API_KEY`) et sélectionnées comme « Clé environnement » dans Composer. Elles ne sont pas nécessaires sur le worker.
 
 Créer le bucket R2 **privé** et une clé limitée à ce bucket. Dans Cloudflare, ouvrir **Stockage et bases de données → R2 → Vue d'ensemble → Gérer les jetons d'API**. Créer un **jeton d'API du compte** (adapté à un service partagé qui reste actif indépendamment d'un utilisateur) ou un **jeton d'API de l'utilisateur** (également utilisable, mais dépendant de cet utilisateur), avec la permission **Lecture et écriture des objets**, limitée au bucket choisi. Après création, Cloudflare affiche **Access Key ID** et **Secret Access Key** : copier ces deux valeurs immédiatement dans `R2_ACCESS_KEY_ID` et `R2_SECRET_ACCESS_KEY`. Le jeton d'API Cloudflare lui-même n'est pas le secret S3 attendu par l'application. `R2_BUCKET` est le nom exact du bucket ; `R2_ENDPOINT` est l'URL **S3 API** de l'account ID affiché sur R2, sans nom de bucket. Pour un bucket créé dans la juridiction **EU**, utiliser `https://<account-id>.eu.r2.cloudflarestorage.com` ; pour un bucket standard, `https://<account-id>.r2.cloudflarestorage.com`. Voir la [documentation Cloudflare R2](https://developers.cloudflare.com/r2/api/tokens/) et le [guide S3](https://developers.cloudflare.com/r2/get-started/s3/).
 
@@ -66,10 +66,12 @@ Le worker dépose directement les WAV sur R2 ; l'API donne au navigateur une URL
 
 ## 3. Vérifier l'accès
 
-1. Ouvrir `https://<domaine-api-railway>/api/health` : la réponse doit être `{"ok":true}`.
+1. Ouvrir `https://<domaine-api-railway>/api/health` : la réponse doit contenir `{"ok":true,"database":"postgresql"}`. Si elle indique `sqlite`, la version déployée utilise une base locale ; si elle renvoie une erreur, lire les logs de l'API Railway.
 2. Ouvrir le site Vercel, entrer `BENCH_PASSWORD`, puis vérifier que Composer, Prix et Clés API se chargent.
 3. Ajouter les clés de votre trio STT/LLM/TTS, lancer un essai web au microphone et vérifier la transcription et l'enregistrement dans Historique.
 4. Si la connexion réussit mais qu'aucun agent ne répond, lire les logs du worker Railway et vérifier `LIVEKIT_AGENT_NAME`, le projet LiveKit et `BENCH_API_URL`.
+
+Il n'y a **qu'une table métier `public.documents`** dans cette version du banc. Elle contient une ligne JSON par composition, clé, prix ou essai ; `kind` distingue ces types. SQL de diagnostic dans la console PostgreSQL Railway : `SELECT to_regclass('public.documents');` puis `SELECT kind, count(*) FROM public.documents GROUP BY kind;`. La table et les lignes initiales sont créées automatiquement au démarrage de l'API ; aucune commande SQL manuelle n'est nécessaire si `DATABASE_URL` pointe vers le bon service.
 
 **Toute personne connaissant `BENCH_PASSWORD` peut se connecter à ce site partagé, modifier les compositions et les clés, et lancer des essais facturables** dans les limites configurées. Il n'existe pas encore de comptes individuels ou de rôles. La limite locale de tentatives de connexion de l'API n'est pas distribuée ; activer aussi une protection de débit de l'hébergeur pour `/api/login` avant de diffuser largement l'URL. Le téléphone demande en plus un numéro, un trunk SIP et une règle de dispatch LiveKit ; voir [téléphonie](deployment.md#téléphone-sip-entrant).
 

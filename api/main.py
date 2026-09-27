@@ -13,9 +13,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 import httpx
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 from .catalog import CATALOG, DEFAULT, PROVIDERS, prices
 from .models import Composition
-from .store import db, get, put, listing, Document
+from .store import db, engine, get, put, listing, Document
 from .costs import cost, compare, percentile
 
 
@@ -147,7 +149,12 @@ def me():
 
 @app.get("/api/health")
 def health():
-    return {"ok": True}
+    try:
+        with db() as s:
+            s.execute(text("SELECT 1"))
+    except SQLAlchemyError:
+        raise HTTPException(503, "Base de données indisponible")
+    return {"ok": True, "database": engine.dialect.name}
 
 
 @app.get("/api/catalog", dependencies=[Depends(auth)])

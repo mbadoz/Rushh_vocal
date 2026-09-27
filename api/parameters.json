@@ -1237,6 +1237,11 @@
       "value": 40
     }
   ],
+  "llm:openrouter:meta-llama/llama-3.3-70b-instruct": [
+    { "name": "temperature", "value": 0.4 },
+    { "name": "top_p", "value": 1 },
+    { "name": "max_completion_tokens", "value": 300 }
+  ],
   "llm:groq:llama-3.1-8b-instant": [
     {
       "name": "user",

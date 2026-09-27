@@ -8,6 +8,7 @@ ENDPOINTS = {
     "groq": "https://api.groq.com/openai/v1",
     "cerebras": "https://api.cerebras.ai/v1",
     "mistral": "https://api.mistral.ai/v1",
+    "openrouter": "https://openrouter.ai/api/v1",
 }
 
 
@@ -202,7 +203,7 @@ async def build(kind, block, credential, resources):
             if k in inspect.signature(cls).parameters and k != "extra_kwargs"
         }
         return cls(model=model, **native, extra_kwargs=merge(params, raw))
-    if kind == "llm" and provider in ("openai", "groq", "cerebras", "mistral"):
+    if kind == "llm" and provider in ("openai", "groq", "cerebras", "mistral", "openrouter"):
         from livekit.plugins.openai import LLM
 
         native = {

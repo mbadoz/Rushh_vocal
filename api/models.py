@@ -27,6 +27,8 @@ class Composition(BaseModel):
     vad: dict[str, Any] = Field(default_factory=dict)
     noise: Literal["none", "bvc", "telephony", "krisp"] = "none"
     thinking_sound: bool = False
+    background_sound: Literal["none", "office", "city", "forest", "crowd"] = "none"
+    background_volume: float = Field(default=0.15, ge=0, le=1)
     max_duration: int = Field(default=180, ge=10, le=1800)
     record_audio: bool = True
     natural: dict[str, Any] = Field(default_factory=dict)
@@ -112,6 +114,9 @@ class Composition(BaseModel):
                 or not 0 <= probability <= 1
             ):
                 raise ValueError("Fréquence des balises : 0 à 1")
+        ack = self.natural.get("long_reply_ack", 0)
+        if not isinstance(ack, (int, float)) or not math.isfinite(ack) or not 0 <= ack <= 1:
+            raise ValueError("Fréquence des acquiescements : 0 à 1")
         if any(not name.isidentifier() for name in self.tools):
             raise ValueError("Nom d’outil invalide")
         return self

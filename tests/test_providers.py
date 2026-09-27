@@ -3,8 +3,9 @@ from copy import deepcopy
 from unittest.mock import AsyncMock
 import pytest
 from api.catalog import CATALOG, DEFAULT
+from api.models import Composition
 from worker.providers import build, WireSession, SocketProxy, wire_payload
-from worker.natural import translate, translated_stream
+from worker.natural import long_user_phrase, translate, translated_stream
 from worker.telemetry import Collector
 
 
@@ -322,3 +323,34 @@ def test_disabled_natural_mode_removes_tags():
         )
         == " Bonjour"
     )
+
+
+def test_openrouter_llama_uses_openai_compatible_endpoint():
+    async def scenario():
+        block = {
+            "provider": "openrouter",
+            "model": "meta-llama/llama-3.3-70b-instruct",
+            "source": "env",
+            "params": {"temperature": 0.4, "max_completion_tokens": 300},
+            "raw": {},
+        }
+        obj = await build("llm", block, {"key": "test-only"}, [])
+        try:
+            assert str(obj._client.base_url) == "https://openrouter.ai/api/v1/"
+            assert obj._opts.model == block["model"]
+        finally:
+            await obj.aclose()
+
+    asyncio.run(scenario())
+
+
+def test_background_and_listening_effects_validate_and_strip_sneeze_tag():
+    config = deepcopy(DEFAULT)
+    config["background_sound"] = "office"
+    config["natural"]["tags"]["sneeze"] = 0.5
+    assert Composition.model_validate(config).background_sound == "office"
+    assert "[[sneeze]]" not in translate(
+        "Bonjour [[sneeze]]", "cartesia", "sonic-3.6", config["natural"]
+    )
+    assert long_user_phrase(("Un mot est prononcé puis suivi d'autres. " * 5).strip())
+    assert not long_user_phrase("Je réfléchis encore et je continue")

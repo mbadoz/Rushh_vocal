@@ -74,6 +74,21 @@ const money = (n: number | undefined) =>
       }).format(n);
 const ms = (n: number | undefined | null) =>
   n == null ? "—" : Math.round(n) + " ms";
+const naturalTags: Record<string, string> = {
+  breath: "Respiration", sigh: "Soupir", throat: "Raclement de gorge",
+  sneeze: "Éternuement", laugh: "Rire", short_pause: "Pause courte",
+  long_pause: "Pause longue",
+};
+const withAudioDefaults = (source: Obj, defaults: Obj) => ({
+  ...source,
+  background_sound: source.background_sound ?? defaults.background_sound ?? "none",
+  background_volume: source.background_volume ?? defaults.background_volume ?? 0.15,
+  natural: {
+    ...defaults.natural,
+    ...source.natural,
+    tags: { ...defaults.natural.tags, ...source.natural?.tags },
+  },
+});
 function JsonField({
   label,
   value,
@@ -206,7 +221,11 @@ export default function App() {
     [microphoneId, setMicrophoneId] = useState(""),
     [microphoneBusy, setMicrophoneBusy] = useState(false);
   const microphoneOptions = useMemo(
-    () => ({ deviceId: { exact: microphoneId } }),
+    () => ({
+      deviceId: { exact: microphoneId },
+      echoCancellation: true,
+      noiseSuppression: true,
+    }),
     [microphoneId],
   );
   const onRoomError = useCallback((e: Error) => setError(e.message), []);
@@ -285,7 +304,7 @@ export default function App() {
         await refresh();
         const c = await api("/compositions");
         setSelected(c.items[0]?.id ?? "");
-        setConfig(c.items[0]?.config ?? cat.default);
+        setConfig(withAudioDefaults(c.items[0]?.config ?? cat.default, cat.default));
       });
   }, [authenticated, execute, refresh]);
   useEffect(() => {
@@ -350,7 +369,7 @@ export default function App() {
     });
   const choose = (id: string) => {
     setSelected(id);
-    setConfig(structuredClone(compositions.find((c) => c.id === id)!.config));
+    setConfig(withAudioDefaults(structuredClone(compositions.find((c) => c.id === id)!.config), catalog!.default));
     setNotice("");
   };
   if (authenticated === null)
@@ -893,18 +912,7 @@ export default function App() {
                       {Object.entries(config.natural.tags).map(
                         ([tag, rate]) => (
                           <label key={tag} className="field">
-                            {
-                              (
-                                {
-                                  breath: "Respiration",
-                                  sigh: "Soupir",
-                                  throat: "Raclement de gorge",
-                                  laugh: "Rire",
-                                  short_pause: "Pause courte",
-                                  long_pause: "Pause longue",
-                                } as Obj
-                              )[tag]
-                            }{" "}
+                            {naturalTags[tag] ?? tag}{" "}
                             · {Math.round(Number(rate) * 100)} %
                             <input
                               type="range"
@@ -925,10 +933,15 @@ export default function App() {
                           </label>
                         ),
                       )}
+                      <label className="field">
+                        « Ouiii » / « OK » après une longue phrase de l’utilisateur · {Math.round(Number(config.natural.long_reply_ack ?? 0) * 100)} %
+                        <input type="range" min="0" max="1" step="0.05"
+                          value={Number(config.natural.long_reply_ack ?? 0)}
+                          onChange={(e) => change("natural", { ...config.natural, long_reply_ack: Number(e.target.value) })}
+                        />
+                      </label>
                       <p className="muted">
-                        Les effets non documentés pour le TTS choisi sont
-                        retirés. Cartesia : rires et pauses. ElevenLabs v3 :
-                        soupirs, raclements, rires et pauses.
+                        En mode pipeline, éternuements et raclements sont joués pendant la parole de l’utilisateur, indépendamment du mode « balises ». Les « Ouiii » / « OK » attendent une phrase transcrite d’au moins 25 mots. Les autres balises dépendent du TTS choisi.
                       </p>
                     </div>
                   </details>
@@ -961,6 +974,24 @@ export default function App() {
                         value={config.thinking_sound}
                         onChange={(v) => change("thinking_sound", v)}
                       />
+                      <label className="field">
+                        Ambiance sonore
+                        <select value={config.background_sound ?? "none"}
+                          onChange={(e) => change("background_sound", e.target.value)}>
+                          <option value="none">Aucune</option>
+                          <option value="office">Bureau</option>
+                          <option value="city">Ville</option>
+                          <option value="forest">Forêt</option>
+                          <option value="crowd">Salle animée</option>
+                        </select>
+                      </label>
+                      <label className="field">
+                        Volume de l’ambiance · {Math.round(Number(config.background_volume ?? 0.15) * 100)} %
+                        <input type="range" min="0" max="0.5" step="0.01"
+                          value={Number(config.background_volume ?? 0.15)}
+                          onChange={(e) => change("background_volume", Number(e.target.value))}
+                        />
+                      </label>
                       <Field
                         name="Enregistrer les deux voix"
                         value={config.record_audio}
@@ -1605,6 +1636,21 @@ function RunDetail({
         {run.recording_error && (
           <p className="warning">{run.recording_error}</p>
         )}
+        {run.events?.find((event: Obj) => event.type === "session_closed") && (
+          <p className="muted">
+            Fin de session :{" "}
+            {run.events.find((event: Obj) => event.type === "session_closed")
+              .reason}
+          </p>
+        )}
+        {run.events
+          ?.filter((event: Obj) => event.type === "provider_error")
+          .map((event: Obj, index: number) => (
+            <p className="warning" key={index}>
+              Fournisseur : {event.provider}/{event.model} · {event.error_type}
+              {event.recoverable ? " (récupérable)" : " (fatal)"}
+            </p>
+          ))}
         <div className="two-col">
           <label className="field">
             Note

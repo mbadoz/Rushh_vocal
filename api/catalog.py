@@ -18,6 +18,11 @@ PROVIDERS = {
         "https://console.groq.com/keys",
         "https://api.groq.com/openai/v1/models",
     ),
+    "openrouter": (
+        "OPENROUTER_API_KEY",
+        "https://openrouter.ai/keys",
+        "https://openrouter.ai/api/v1/models",
+    ),
     "cerebras": (
         "CEREBRAS_API_KEY",
         "https://cloud.cerebras.ai",
@@ -195,6 +200,12 @@ add(
     "llm",
     "groq",
     "llama-3.1-8b-instant",
+    dict(temperature=0.4, max_completion_tokens=300),
+)
+add(
+    "llm",
+    "openrouter",
+    "meta-llama/llama-3.3-70b-instruct",
     dict(temperature=0.4, max_completion_tokens=300),
 )
 add(
@@ -391,6 +402,8 @@ DEFAULT = dict(
     vad=dict(activation_threshold=0.5, min_silence_duration=0.4),
     noise="none",
     thinking_sound=False,
+    background_sound="none",
+    background_volume=0.15,
     max_duration=180,
     record_audio=True,
     natural=dict(
@@ -400,10 +413,12 @@ DEFAULT = dict(
             "breath": 0,
             "sigh": 0,
             "throat": 0,
+            "sneeze": 0,
             "laugh": 0,
             "short_pause": 0.1,
             "long_pause": 0,
         },
+        long_reply_ack=0,
     ),
     tools={
         "chercher_bien": [
@@ -421,6 +436,7 @@ PRICE_SOURCES = {
     "cartesia": "https://cartesia.ai/pricing",
     "soniox": "https://soniox.com/pricing",
     "groq": "https://console.groq.com/docs/models",
+    "openrouter": "https://openrouter.ai/meta-llama/llama-3.3-70b-instruct",
     "openai": "https://developers.openai.com/api/docs/pricing",
     "google": "https://ai.google.dev/gemini-api/docs/pricing",
     "deepgram": "https://deepgram.com/pricing",
@@ -438,6 +454,7 @@ def prices():
         "openai/gpt-oss-20b": (0.075, 0.30),
         "openai/gpt-oss-safeguard-20b": (0.075, 0.30),
         "openai/gpt-oss-120b": (0.15, 0.60),
+        "meta-llama/llama-3.3-70b-instruct": (0.10, 0.32),
         "gpt-6-luna": (0.10, 0.50),
         "gpt-5.4-mini": (0.75, 4.5),
         "gpt-4.1-mini": (0.4, 1.6),

@@ -8,7 +8,6 @@ TAGS = {
     },
     "elevenlabs": {
         "sigh": "[sighs]",
-        "throat": "[clears throat]",
         "laugh": "[laughing]",
         "short_pause": "[short pause]",
         "long_pause": "[long pause]",
@@ -28,7 +27,7 @@ def translate(text, provider, model, options, rng=random.random):
         return supported.get(tag, "") if rates.get(tag, 0) > 0 else ""
 
     text = re.sub(
-        r"\[\[(breath|sigh|throat|laugh|short_pause|long_pause)\]\]", replace, text
+        r"\[\[(breath|sigh|throat|sneeze|laugh|short_pause|long_pause)\]\]", replace, text
     )
     if options.get("mode") in ("rules", "both"):
         for tag, rate in rates.items():
@@ -51,7 +50,7 @@ def prompt_suffix(options):
         tags = [
             f"[[{k}]] (environ {v:.0%} des tours)"
             for k, v in options.get("tags", {}).items()
-            if v > 0
+            if v > 0 and k not in ("sneeze", "throat")
         ]
         if tags:
             suffix += (
@@ -60,6 +59,13 @@ def prompt_suffix(options):
                 + "."
             )
     return suffix
+
+
+def long_user_phrase(text, min_words=25):
+    return (
+        len(re.findall(r"\b[\wÀ-ÿ'-]+\b", text)) >= min_words
+        and bool(re.search(r"[.!?…]\s*$", text))
+    )
 
 
 async def translated_stream(stream, provider, model, options):

@@ -1,4 +1,4 @@
-import asyncio, json, logging, os
+import asyncio, json, logging, os, random, time
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -17,7 +17,7 @@ from livekit.agents import (
 from livekit.agents.voice import room_io
 from livekit.plugins import silero
 from .providers import build
-from .natural import prompt_suffix, translated_stream, translate
+from .natural import long_user_phrase, prompt_suffix, translated_stream, translate
 from .recording import Recorder
 from .telemetry import Collector
 
@@ -91,6 +91,9 @@ async def entrypoint(ctx: JobContext):
     sync_task = None
     timer = None
     bg = None
+    effect_task = None
+    acknowledgement_task = None
+    last_acknowledgement = 0.0
     finished = False
     fatal_error = None
 
@@ -122,6 +125,10 @@ async def entrypoint(ctx: JobContext):
             sync_task.cancel()
         if timer:
             timer.cancel()
+        if effect_task:
+            effect_task.cancel()
+        if acknowledgement_task:
+            acknowledgement_task.cancel()
         if session:
             await session.aclose()
         recording_error = None
@@ -194,6 +201,22 @@ async def entrypoint(ctx: JobContext):
 
         def provider_error(event):
             nonlocal fatal_error
+            stats.events.append(
+                {
+                    "type": "provider_error",
+                    "provider": getattr(event.source, "provider", "unknown"),
+                    "model": getattr(event.source, "model", "unknown"),
+                    "error_type": type(event.error).__name__,
+                    "recoverable": getattr(event.error, "recoverable", True),
+                }
+            )
+            log.error(
+                "Erreur fournisseur : %s/%s (%s, récupérable=%s)",
+                getattr(event.source, "provider", "unknown"),
+                getattr(event.source, "model", "unknown"),
+                type(event.error).__name__,
+                getattr(event.error, "recoverable", True),
+            )
             if not getattr(event.error, "recoverable", True):
                 fatal_error = (
                     "Erreur fournisseur non récupérable ; consultez les logs du worker."
@@ -201,13 +224,49 @@ async def entrypoint(ctx: JobContext):
 
         session.on("error", provider_error)
         session.on("metrics_collected", lambda event: stats.metric(event.metrics))
-        session.on(
-            "user_state_changed",
-            lambda event: stats.user_state(event.old_state, event.new_state),
-        )
-        session.on(
-            "agent_state_changed", lambda event: stats.agent_state(event.new_state)
-        )
+        def user_state(event):
+            nonlocal effect_task
+            stats.user_state(event.old_state, event.new_state)
+            if effect_task:
+                effect_task.cancel()
+                effect_task = None
+            if event.new_state == "speaking" and bg and config["mode"] == "pipeline":
+                rates = config.get("natural", {}).get("tags", {})
+                effects = [(name, float(rates.get(name, 0))) for name in ("sneeze", "throat")]
+                if any(rate > 0 for _, rate in effects):
+                    async def play_effect():
+                        while session.user_state == "speaking":
+                            await asyncio.sleep(random.uniform(3.0, 7.0))
+                            if session.user_state != "speaking":
+                                break
+                            for name, rate in effects:
+                                if random.random() < rate:
+                                    bg.play(AudioConfig(str(Path(__file__).parent / "assets" / (name + ".ogg")), volume=0.35))
+                                    break
+                    effect_task = asyncio.create_task(play_effect())
+
+        session.on("user_state_changed", user_state)
+        session.on("agent_state_changed", lambda event: stats.agent_state(event.new_state))
+
+        def user_transcript(event):
+            nonlocal acknowledgement_task, last_acknowledgement
+            rate = config.get("natural", {}).get("long_reply_ack", 0)
+            if (config["mode"] != "pipeline" or not rate or session.user_state != "speaking"
+                or not long_user_phrase(event.transcript)
+                or time.monotonic() - last_acknowledgement < 12
+                or acknowledgement_task and not acknowledgement_task.done()
+                or random.random() >= rate):
+                return
+            last_acknowledgement = time.monotonic()
+
+            async def acknowledge():
+                await asyncio.sleep(0.25)
+                if session.user_state == "speaking" and session.agent_state != "speaking":
+                    session.say(random.choice(("Ouiii.", "OK.")), allow_interruptions=False, add_to_chat_ctx=False)
+
+            acknowledgement_task = asyncio.create_task(acknowledge())
+
+        session.on("user_input_transcribed", user_transcript)
 
         def conversation(event):
             item = event.item
@@ -236,8 +295,29 @@ async def entrypoint(ctx: JobContext):
 
         session.on("function_tools_executed", tools_event)
         closed = asyncio.Event()
-        session.on("close", lambda _: closed.set())
-        ctx.room.on("disconnected", lambda *_: closed.set())
+        def session_closed(event):
+            nonlocal fatal_error
+            close_reason = getattr(event, "reason", None)
+            reason = getattr(close_reason, "value", str(close_reason))
+            stats.events.append({"type": "session_closed", "reason": reason})
+            log.info("Session vocale fermée : %s", reason)
+            if getattr(event, "error", None):
+                fatal_error = "Session vocale interrompue par une erreur fournisseur ; consultez les logs du worker."
+            closed.set()
+
+        def room_disconnected(reason):
+            try:
+                disconnect_reason = rtc.DisconnectReason.Name(reason)
+            except ValueError:
+                disconnect_reason = str(reason)
+            stats.events.append(
+                {"type": "session_closed", "reason": "room_disconnected: " + disconnect_reason}
+            )
+            log.info("Salle LiveKit déconnectée : %s", disconnect_reason)
+            closed.set()
+
+        session.on("close", session_closed)
+        ctx.room.on("disconnected", room_disconnected)
         ctx.add_shutdown_callback(finish)
         participant = await asyncio.wait_for(ctx.wait_for_participant(), timeout=60)
         if config["record_audio"]:
@@ -289,15 +369,25 @@ async def entrypoint(ctx: JobContext):
                 audio_input=room_io.AudioInputOptions(noise_cancellation=noise),
             ),
         )
-        if config["thinking_sound"]:
+        if config["thinking_sound"] or config.get("background_sound", "none") != "none" or any(
+            config.get("natural", {}).get("tags", {}).get(name, 0) > 0
+            for name in ("sneeze", "throat")
+        ):
             from livekit.agents import (
                 BackgroundAudioPlayer,
                 AudioConfig,
                 BuiltinAudioClip,
             )
 
+            ambience = {
+                "office": BuiltinAudioClip.OFFICE_AMBIENCE,
+                "city": BuiltinAudioClip.CITY_AMBIENCE,
+                "forest": BuiltinAudioClip.FOREST_AMBIENCE,
+                "crowd": BuiltinAudioClip.CROWDED_ROOM,
+            }.get(config.get("background_sound", "none"))
             bg = BackgroundAudioPlayer(
-                thinking_sound=AudioConfig(BuiltinAudioClip.KEYBOARD_TYPING, volume=0.3)
+                ambient_sound=AudioConfig(ambience, volume=config.get("background_volume", 0.15)) if ambience else None,
+                thinking_sound=AudioConfig(BuiltinAudioClip.KEYBOARD_TYPING, volume=0.3) if config["thinking_sound"] else None,
             )
             await bg.start(room=ctx.room, agent_session=session)
 
@@ -315,7 +405,10 @@ async def entrypoint(ctx: JobContext):
         # Browser dispatch can precede microphone connection. Wait for a real participant.
         if config["greeting"]:
             if config["mode"] == "pipeline":
-                session.say(config["greeting"], allow_interruptions=True)
+                session.say(
+                    config["greeting"],
+                    allow_interruptions=options.get("allow_interruptions", True),
+                )
             else:
                 session.generate_reply(
                     instructions="Dis cette phrase pour accueillir : "

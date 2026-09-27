@@ -16,7 +16,15 @@ class Document(Base):
     value = Column(JSON, nullable=False)
 
 
-url = os.getenv("DATABASE_URL", "sqlite:///./data/bench.db")
+configured_url = os.getenv("DATABASE_URL")
+if os.getenv("RAILWAY_SERVICE_ID") and (
+    not configured_url or configured_url.startswith("sqlite")
+):
+    raise RuntimeError(
+        "DATABASE_URL PostgreSQL manquante sur Railway : configurez une référence "
+        "vers le service Postgres dans les variables de l'API."
+    )
+url = configured_url or "sqlite:///./data/bench.db"
 if url.startswith("sqlite"):
     Path("data").mkdir(exist_ok=True)
 if url.startswith("postgres://"):

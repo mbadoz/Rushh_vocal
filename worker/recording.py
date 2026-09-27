@@ -31,7 +31,8 @@ class Recorder:
                 )
                 end = min(len(self.samples), cursor + len(data))
                 if end > cursor:
-                    self.samples[cursor:end, channel] = data[: end - cursor]
+                    mixed = self.samples[cursor:end, channel].astype(np.int32) + data[: end - cursor].astype(np.int32)
+                    self.samples[cursor:end, channel] = np.clip(mixed, -32768, 32767)
                 cursor = end
                 self.length = max(self.length, end)
         finally:
