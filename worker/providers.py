@@ -232,6 +232,11 @@ async def build(kind, block, credential, resources):
         kwargs = {"params": opts, "api_key": key}
     else:
         kwargs = {"model": model, **params}
+        if provider == "cartesia" and kind == "tts":
+            # The Sonic 3 plugin rejects an integer, including the UI's "1".
+            speed = kwargs.get("speed")
+            if isinstance(speed, int) and not isinstance(speed, bool):
+                kwargs["speed"] = float(speed)
         if provider == "azure":
             kwargs.pop("model")
             kwargs.update(

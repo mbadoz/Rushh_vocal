@@ -75,6 +75,20 @@ def test_cartesia_final_wire_including_forced_buffer_override(param, value):
     asyncio.run(scenario())
 
 
+def test_cartesia_integer_speed_is_accepted_by_sonic_3_plugin():
+    async def scenario():
+        block = deepcopy(DEFAULT["tts"])
+        block["params"]["speed"] = 1
+        obj = await build("tts", block, {"key": "test-only"}, [])
+        try:
+            assert obj._opts.speed == 1.0
+            assert isinstance(obj._opts.speed, float)
+        finally:
+            await obj.aclose()
+
+    asyncio.run(scenario())
+
+
 def test_openai_compatible_extra_body_reaches_sdk():
     async def scenario():
         from livekit.agents import llm
